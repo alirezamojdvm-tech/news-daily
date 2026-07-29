@@ -1,33 +1,33 @@
 ---
 // --- بخش کد (Frontmatter) ---
-import fs from 'fs';
-import path from 'path';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 
+// حل مسیر در محیط های مختلف
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const dataDir = resolve(__dirname, '../data');
 
-// --- تابع برای بارگذاری داده‌ها از فایل‌های JSON با fs ---
-function loadDataFromFile(filename) {
+// --- تابع کمکی برای بارگذاری داده ها ---
+function loadJSON(filename) {
   try {
-    const filePath = path.join(__dirname, '../data', filename);
-    if (fs.existsSync(filePath)) {
-      const content = fs.readFileSync(filePath, 'utf8');
-      return JSON.parse(content);
-    }
-  } catch (error) {
-    console.log(`⚠️ خطا در بارگذاری ${filename}:`, error.message);
+    const filePath = resolve(dataDir, filename);
+    const content = readFileSync(filePath, 'utf8');
+    return JSON.parse(content);
+  } catch {
+    console.log(`⚠️ فایل ${filename} یافت نشد.`);
+    return null;
   }
-  return null;
 }
 
-// --- بارگذاری داده‌ها ---
-const goldData = loadDataFromFile('gold-currency.json');
-const airData = loadDataFromFile('air-quality.json');
-const marketData = loadDataFromFile('market-index.json');
-const commodityData = loadDataFromFile('commodities.json');
+// --- بارگذاری داده‌ها با مسیردهی اصلاح شده ---
+const goldData = loadJSON('gold-currency.json');
+const airData = loadJSON('air-quality.json');
+const marketData = loadJSON('market-index.json');
+const commodityData = loadJSON('commodities.json');
 
-// --- استخراج داده‌های طلا و ارز ---
+// --- استخراج داده‌های طلا و ارز (با بازگشت به پیش‌فرض) ---
 let goldPrice = 'نامشخص';
 let goldChange = 0;
 let usdPrice = 'نامشخص';
@@ -36,7 +36,6 @@ let btcPrice = 'نامشخص';
 let ethPrice = 'نامشخص';
 
 if (goldData) {
-  // طلا
   if (goldData.gold && goldData.gold.length > 0) {
     const goldItem = goldData.gold[0];
     if (goldItem) {
@@ -45,33 +44,17 @@ if (goldData) {
     }
   }
   
-  // ارزها
   if (goldData.currency && goldData.currency.length > 0) {
-    const usd = goldData.currency.find(item => 
-      item.symbol?.toUpperCase() === 'USD' || 
-      item.name?.includes('دلار')
-    );
+    const usd = goldData.currency.find(item => item.symbol?.toUpperCase() === 'USD' || item.name?.includes('دلار'));
     if (usd && usd.price) usdPrice = Number(usd.price).toLocaleString();
-    
-    const eur = goldData.currency.find(item => 
-      item.symbol?.toUpperCase() === 'EUR' || 
-      item.name?.includes('یورو')
-    );
+    const eur = goldData.currency.find(item => item.symbol?.toUpperCase() === 'EUR' || item.name?.includes('یورو'));
     if (eur && eur.price) eurPrice = Number(eur.price).toLocaleString();
   }
   
-  // ارزهای دیجیتال
   if (goldData.crypto && goldData.crypto.length > 0) {
-    const btc = goldData.crypto.find(item => 
-      item.symbol?.toUpperCase() === 'BTC' || 
-      item.name?.includes('بیت‌کوین')
-    );
+    const btc = goldData.crypto.find(item => item.symbol?.toUpperCase() === 'BTC' || item.name?.includes('بیت‌کوین'));
     if (btc && btc.price) btcPrice = Number(btc.price).toLocaleString();
-    
-    const eth = goldData.crypto.find(item => 
-      item.symbol?.toUpperCase() === 'ETH' || 
-      item.name?.includes('اتریوم')
-    );
+    const eth = goldData.crypto.find(item => item.symbol?.toUpperCase() === 'ETH' || item.name?.includes('اتریوم'));
     if (eth && eth.price) ethPrice = Number(eth.price).toLocaleString();
   }
 }
@@ -115,19 +98,19 @@ if (commodityData && commodityData.items) {
   commodityItems = commodityData.items.slice(0, 6);
 }
 
-// --- تاریخ به‌روزرسانی ---
+// --- تاریخ به‌روزرسانی (از فایل یا زمان جاری) ---
 const lastUpdate = new Date().toLocaleString('fa-IR');
 
-// --- لیست اخبار نمونه ---
+// --- لیست اخبار (نمونه) ---
 const newsItems = [
   { id: 1, title: "قیمت طلا امروز ۲۰ درصد افزایش یافت", date: "۱۴۰۴/۰۲/۱۰" },
   { id: 2, title: "هوای تهران در شرایط ناسالم قرار گرفت", date: "۱۴۰۴/۰۲/۰۹" },
   { id: 3, title: "ارزش دلار در بازار آزاد کاهش یافت", date: "۱۴۰۴/۰۲/۰۸" },
-  // ✅ خبر جدید را اینجا اضافه کن
-  { id: 4, title: "افزایش نرخ بهره در آمریکا و تأثیر آن بر بازار ایران", date: "۱۴۰۴/۰۲/۱۱" },
+  { id: 4, title: "خبر جدید شما اینجا", date: "۱۴۰۴/۰۲/۱۱" }, // ← خبر جدید
 ];
+---
 
-<!-- --- بخش HTML (Template) --- -->
+<!-- --- بخش HTML (Template) --- (بدون تغییر نسبت به نسخه قبل) -->
 <html>
   <head>
     <meta charset="UTF-8" />
