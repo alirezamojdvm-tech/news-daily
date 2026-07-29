@@ -1,79 +1,7 @@
 ---
 // src/pages/index.astro
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { articles } from '../data/articles.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const blogDir = path.resolve(__dirname, '../content/blog');
-
-// --- تابع برای خواندن متادیتای مقالات از فایل‌های Markdown ---
-function getArticlesList() {
-  try {
-    const files = fs.readdirSync(blogDir);
-    const mdFiles = files.filter(file => file.endsWith('.md'));
-    
-    const articles = mdFiles.map((file) => {
-      const slug = file.replace('.md', '');
-      const filePath = path.join(blogDir, file);
-      const content = fs.readFileSync(filePath, 'utf8');
-      
-      // استخراج frontmatter به صورت ساده
-      const lines = content.split('\n');
-      let frontmatter = {};
-      let isFrontmatter = false;
-      let currentKey = '';
-      let currentValue = '';
-      
-      for (const line of lines) {
-        if (line.trim() === '---') {
-          if (!isFrontmatter) {
-            isFrontmatter = true;
-            continue;
-          } else {
-            break;
-          }
-        }
-        if (isFrontmatter) {
-          const match = line.match(/^(\w+):\s*(.*)$/);
-          if (match) {
-            if (currentKey) {
-              frontmatter[currentKey] = currentValue.trim();
-            }
-            currentKey = match[1];
-            currentValue = match[2];
-          } else if (currentKey) {
-            currentValue += ' ' + line.trim();
-          }
-        }
-      }
-      if (currentKey) {
-        frontmatter[currentKey] = currentValue.trim();
-      }
-      
-      // پردازش tags
-      if (frontmatter.tags && typeof frontmatter.tags === 'string') {
-        frontmatter.tags = frontmatter.tags.replace(/[\[\]"]/g, '').split(',').map(t => t.trim());
-      }
-      
-      return {
-        id: slug,
-        ...frontmatter,
-        slug: slug
-      };
-    });
-    
-    return articles;
-  } catch (error) {
-    console.error('❌ خطا در خواندن پوشه مقالات:', error);
-    return [];
-  }
-}
-
-const articles = getArticlesList();
-
-// --- تنظیمات سئو و اطلاعات سایت ---
 const siteTitle = "وبلاگ شخصی من";
 const siteDescription = "مجموعه‌ای از مقالات آموزشی، تجربیات و یادداشت‌های روزانه";
 const siteUrl = "https://news-daily-e3a.pages.dev";
@@ -83,7 +11,6 @@ const authorName = "علیرضا محمّدی جعفری";
 <!doctype html>
 <html lang="fa" dir="rtl">
   <head>
-    <!-- ... بقیه هدر و استایل‌ها مانند قبل ... -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{siteTitle}</title>
@@ -99,10 +26,8 @@ const authorName = "علیرضا محمّدی جعفری";
     <link rel="canonical" href={siteUrl} />
     
     <style>
-      /* ... استایل‌های کامل مانند قبل ... */
       :root {
         --primary: #4f46e5;
-        --primary-dark: #4338ca;
         --gray-50: #f8fafc;
         --gray-100: #f1f5f9;
         --gray-200: #e2e8f0;
@@ -111,11 +36,9 @@ const authorName = "علیرضا محمّدی جعفری";
         --radius: 12px;
         --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.1);
-        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition: all 0.3s ease;
       }
-      
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      
       body {
         font-family: 'Vazir', 'Tahoma', system-ui, sans-serif;
         background: var(--gray-50);
@@ -123,16 +46,13 @@ const authorName = "علیرضا محمّدی جعفری";
         line-height: 1.8;
         padding: 0 20px;
       }
-      
       .container { max-width: 820px; margin: 0 auto; padding: 30px 0 50px; }
-      
       .site-header {
         text-align: center;
         padding: 40px 0 30px;
         border-bottom: 2px solid var(--gray-200);
         margin-bottom: 40px;
       }
-      
       .site-header h1 {
         font-size: 2.8rem;
         font-weight: 800;
@@ -142,20 +62,17 @@ const authorName = "علیرضا محمّدی جعفری";
         background-clip: text;
         letter-spacing: -0.5px;
       }
-      
       .site-header .subtitle {
         color: var(--gray-700);
         font-size: 1.1rem;
         margin-top: 6px;
         -webkit-text-fill-color: var(--gray-700);
       }
-      
       .articles-grid {
         display: flex;
         flex-direction: column;
         gap: 28px;
       }
-      
       .article-card {
         background: white;
         border-radius: var(--radius);
@@ -164,13 +81,11 @@ const authorName = "علیرضا محمّدی جعفری";
         transition: var(--transition);
         border: 1px solid transparent;
       }
-      
       .article-card:hover {
         transform: translateY(-4px);
         box-shadow: var(--shadow-hover);
         border-color: var(--gray-200);
       }
-      
       .article-card .meta {
         display: flex;
         justify-content: space-between;
@@ -179,7 +94,6 @@ const authorName = "علیرضا محمّدی جعفری";
         gap: 10px;
         margin-bottom: 12px;
       }
-      
       .article-card .date {
         font-size: 0.85rem;
         color: #64748b;
@@ -188,13 +102,11 @@ const authorName = "علیرضا محمّدی جعفری";
         border-radius: 20px;
         display: inline-block;
       }
-      
       .article-card .tag-group {
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
       }
-      
       .article-card .tag {
         font-size: 0.75rem;
         font-weight: 500;
@@ -204,35 +116,29 @@ const authorName = "علیرضا محمّدی جعفری";
         border-radius: 20px;
         transition: var(--transition);
       }
-      
       .article-card .tag:hover {
         background: var(--primary);
         color: white;
       }
-      
       .article-card h2 {
         font-size: 1.6rem;
         font-weight: 700;
         margin: 10px 0 12px;
         line-height: 1.3;
       }
-      
       .article-card h2 a {
         text-decoration: none;
         color: var(--gray-900);
         transition: var(--transition);
       }
-      
       .article-card h2 a:hover {
         color: var(--primary);
       }
-      
       .article-card .excerpt {
         color: #475569;
         font-size: 1rem;
         margin-bottom: 16px;
       }
-      
       .article-card .read-more {
         display: inline-flex;
         align-items: center;
@@ -242,12 +148,10 @@ const authorName = "علیرضا محمّدی جعفری";
         text-decoration: none;
         transition: var(--transition);
       }
-      
       .article-card .read-more:hover {
         gap: 12px;
         color: var(--primary-dark);
       }
-      
       .site-footer {
         margin-top: 60px;
         text-align: center;
@@ -256,7 +160,6 @@ const authorName = "علیرضا محمّدی جعفری";
         color: #94a3b8;
         font-size: 0.9rem;
       }
-      
       @media (max-width: 640px) {
         .site-header h1 { font-size: 2rem; }
         .article-card { padding: 20px; }
@@ -279,19 +182,19 @@ const authorName = "علیرضا محمّدی جعفری";
               <div class="meta">
                 <span class="date">📅 {article.date}</span>
                 <div class="tag-group">
-                  {article.tags?.map((tag) => (
+                  {article.tags.map((tag) => (
                     <span class="tag">#{tag}</span>
                   ))}
                 </div>
               </div>
               
               <h2>
-                <a href={`/posts/${article.slug}`}>{article.title}</a>
+                <a href={`/posts/${article.id}`}>{article.title}</a>
               </h2>
               
               <p class="excerpt">{article.excerpt}</p>
               
-              <a href={`/posts/${article.slug}`} class="read-more">
+              <a href={`/posts/${article.id}`} class="read-more">
                 ادامه مطلب ←
               </a>
             </article>

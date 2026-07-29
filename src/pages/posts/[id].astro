@@ -1,102 +1,18 @@
 ---
 // src/pages/posts/[id].astro
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const blogDir = path.resolve(__dirname, '../../content/blog');
-
-// --- تابع برای خواندن فایل‌های Markdown و استخراج frontmatter و محتوا ---
-function getArticleData(slug) {
-  try {
-    const filePath = path.join(blogDir, `${slug}.md`);
-    if (!fs.existsSync(filePath)) return null;
-    
-    const content = fs.readFileSync(filePath, 'utf8');
-    const lines = content.split('\n');
-    let frontmatter = {};
-    let body = '';
-    let isFrontmatter = false;
-    let frontmatterEnded = false;
-    let currentKey = '';
-    let currentValue = '';
-    
-    for (const line of lines) {
-      if (line.trim() === '---') {
-        if (!isFrontmatter) {
-          isFrontmatter = true;
-          continue;
-        } else {
-          frontmatterEnded = true;
-          isFrontmatter = false;
-          continue;
-        }
-      }
-      
-      if (isFrontmatter) {
-        const match = line.match(/^(\w+):\s*(.*)$/);
-        if (match) {
-          if (currentKey) {
-            frontmatter[currentKey] = currentValue.trim();
-          }
-          currentKey = match[1];
-          currentValue = match[2];
-        } else if (currentKey) {
-          currentValue += ' ' + line.trim();
-        }
-      } else if (frontmatterEnded) {
-        body += line + '\n';
-      }
-    }
-    
-    if (currentKey) {
-      frontmatter[currentKey] = currentValue.trim();
-    }
-    
-    // پردازش tags اگر به صورت رشته باشد
-    if (frontmatter.tags && typeof frontmatter.tags === 'string') {
-      frontmatter.tags = frontmatter.tags.replace(/[\[\]"]/g, '').split(',').map(t => t.trim());
-    }
-    
-    return {
-      ...frontmatter,
-      id: parseInt(slug),
-      content: body.trim()
-    };
-  } catch (error) {
-    console.error(`❌ خطا در خواندن فایل ${slug}.md:`, error);
-    return null;
-  }
-}
+import { articles } from '../../data/articles.js';
 
 // --- تابع getStaticPaths برای تولید صفحات ---
 export async function getStaticPaths() {
-  try {
-    const files = fs.readdirSync(blogDir);
-    const mdFiles = files.filter(file => file.endsWith('.md'));
-    
-    return mdFiles.map((file) => {
-      const slug = file.replace('.md', '');
-      return {
-        params: { id: slug },
-        props: { slug }
-      };
-    });
-  } catch (error) {
-    console.error('❌ خطا در خواندن پوشه مقالات:', error);
-    return [];
-  }
+  return articles.map((article) => ({
+    params: { id: String(article.id) },
+    props: { article },
+  }));
 }
 
 // --- دریافت props مقاله جاری ---
-const { slug } = Astro.props;
-const article = getArticleData(slug);
-
-if (!article) {
-  return Astro.redirect('/');
-}
+const { article } = Astro.props;
+if (!article) return Astro.redirect('/');
 ---
 
 <!doctype html>
@@ -107,19 +23,16 @@ if (!article) {
     <title>{article.title} | وبلاگ من</title>
     <meta name="description" content={article.excerpt} />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={`https://news-daily-e3a.pages.dev/posts/${slug}`} />
-    
+    <link rel="canonical" href={`https://news-daily-e3a.pages.dev/posts/${article.id}`} />
     <meta property="og:title" content={article.title} />
     <meta property="og:description" content={article.excerpt} />
-    <meta property="og:url" content={`https://news-daily-e3a.pages.dev/posts/${slug}`} />
+    <meta property="og:url" content={`https://news-daily-e3a.pages.dev/posts/${article.id}`} />
     <meta property="og:type" content="article" />
-    
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={article.title} />
     <meta name="twitter:description" content={article.excerpt} />
     
     <style>
-      /* استایل‌های مشابه قبل */
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body {
         font-family: 'Vazir', 'Tahoma', system-ui, sans-serif;
@@ -165,7 +78,6 @@ if (!article) {
       .article-content { font-size: 1.1rem; color: #1e293b; line-height: 2; }
       .article-content p { margin-bottom: 20px; }
       .article-content h2 { font-size: 1.6rem; margin: 30px 0 15px; color: #0f172a; }
-      .article-content h3 { font-size: 1.3rem; margin: 25px 0 10px; color: #1e293b; }
       .article-footer {
         margin-top: 40px;
         padding-top: 20px;
@@ -186,7 +98,7 @@ if (!article) {
           <div class="meta">
             <span>📅 {article.date}</span>
             <div class="tags">
-              {article.tags?.map((tag) => (
+              {article.tags.map((tag) => (
                 <span class="tag">#{tag}</span>
               ))}
             </div>
@@ -194,9 +106,7 @@ if (!article) {
         </div>
         
         <div class="article-content">
-          {article.content.split('\n').map((paragraph, index) => (
-            paragraph.trim() ? <p>{paragraph}</p> : null
-          ))}
+          <p>{article.content}</p>
         </div>
       </article>
       
