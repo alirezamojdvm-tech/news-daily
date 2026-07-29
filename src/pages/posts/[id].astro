@@ -1,1 +1,144 @@
-notepad src\pages\posts\[id].astro
+---
+// src/pages/posts/[id].astro
+import { articles } from '../../data/articles.js';
+
+// --- تابع getStaticPaths برای تولید صفحات ---
+export async function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { id: String(article.id) },
+    props: { article },
+  }));
+}
+
+// --- دریافت props مقاله جاری ---
+const { article } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{article.title} | وبلاگ من</title>
+    <meta name="description" content={article.excerpt} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={`https://news-daily-e3a.pages.dev/posts/${article.id}`} />
+    
+    <meta property="og:title" content={article.title} />
+    <meta property="og:description" content={article.excerpt} />
+    <meta property="og:url" content={`https://news-daily-e3a.pages.dev/posts/${article.id}`} />
+    <meta property="og:type" content="article" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={article.title} />
+    <meta name="twitter:description" content={article.excerpt} />
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Vazir', 'Tahoma', system-ui, sans-serif;
+        background: #f8fafc;
+        color: #0f172a;
+        line-height: 1.8;
+        padding: 0 20px;
+      }
+      .container {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 30px 0 50px;
+      }
+      .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #4f46e5;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+      }
+      .back-link:hover {
+        color: #4338ca;
+        transform: translateX(-5px);
+      }
+      .article-header {
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+      }
+      .article-header h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 10px;
+      }
+      .article-header .meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        color: #64748b;
+        font-size: 0.9rem;
+      }
+      .article-header .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .article-header .tag {
+        background: #eef2ff;
+        color: #4f46e5;
+        padding: 2px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+      .article-content {
+        font-size: 1.1rem;
+        color: #1e293b;
+        line-height: 2;
+      }
+      .article-content p {
+        margin-bottom: 20px;
+      }
+      .article-footer {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="/" class="back-link">← بازگشت به لیست مقالات</a>
+      
+      <article>
+        <div class="article-header">
+          <h1>{article.title}</h1>
+          <div class="meta">
+            <span>📅 {article.date}</span>
+            <div class="tags">
+              {article.tags.map((tag) => (
+                <span class="tag">#{tag}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <div class="article-content">
+          <p>{article.content}</p>
+        </div>
+      </article>
+      
+      <div class="article-footer">
+        <p>© {new Date().getFullYear()} تمامی حقوق محفوظ است</p>
+      </div>
+    </div>
+  </body>
+</html>
