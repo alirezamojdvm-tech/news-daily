@@ -1,0 +1,35 @@
+{
+  "items": [
+    {
+      "name": "طلای جهانی",
+      "price": 2350,
+      "change_percent": 0.5,
+      "unit": "USD/oz"
+    },
+    {
+      "name": "نقره",
+      "price": 28.5,
+      "change_percent": -0.3,
+      "unit": "USD/oz"
+    },
+    {
+      "name": "مس",
+      "price": 4.2,
+      "change_percent": 0.8,
+      "unit": "USD/lb"
+    },
+    {
+      "name": "نفت برنت",
+      "price": 82.5,
+      "change_percent": 1.2,
+      "unit": "USD/bbl"
+    },
+    {
+      "name": "نفت وست تگزاس",
+      "price": 78.5,
+      "change_percent": 1,
+      "unit": "USD/bbl"
+    }
+  ],
+  "last_update": "2026-07-29T14:09:10.823Z"
+}

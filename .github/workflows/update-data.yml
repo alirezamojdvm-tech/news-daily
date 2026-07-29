@@ -1,0 +1,35 @@
+name: به‌روزرسانی خودکار داده‌ها
+
+on:
+  schedule:
+    # هر روز ساعت ۸ صبح به وقت تهران (۴:۳۰ UTC)
+    - cron: '30 4 * * *'
+  # امکان اجرای دستی از دکمه Actions
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: دریافت کد
+        uses: actions/checkout@v4
+        
+      - name: نصب Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: نصب وابستگی‌ها
+        run: npm install
+        
+      - name: اجرای اسکریپت دریافت داده
+        run: node src/scripts/fetch-data.js
+        
+      - name: ذخیره تغییرات در مخزن
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add src/data/
+          git diff --staged --quiet || git commit -m "📊 به‌روزرسانی خودکار داده‌ها $(date '+%Y-%m-%d')"
+          git push

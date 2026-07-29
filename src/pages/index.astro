@@ -1,0 +1,337 @@
+---
+// --- بخش کد (Frontmatter) ---
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// --- تابع برای بارگذاری داده‌ها از فایل‌های JSON با fs ---
+function loadDataFromFile(filename) {
+  try {
+    const filePath = path.join(__dirname, '../data', filename);
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(content);
+    }
+  } catch (error) {
+    console.log(`⚠️ خطا در بارگذاری ${filename}:`, error.message);
+  }
+  return null;
+}
+
+// --- بارگذاری داده‌ها ---
+const goldData = loadDataFromFile('gold-currency.json');
+const airData = loadDataFromFile('air-quality.json');
+const marketData = loadDataFromFile('market-index.json');
+const commodityData = loadDataFromFile('commodities.json');
+
+// --- استخراج داده‌های طلا و ارز ---
+let goldPrice = 'نامشخص';
+let goldChange = 0;
+let usdPrice = 'نامشخص';
+let eurPrice = 'نامشخص';
+let btcPrice = 'نامشخص';
+let ethPrice = 'نامشخص';
+
+if (goldData) {
+  // طلا
+  if (goldData.gold && goldData.gold.length > 0) {
+    const goldItem = goldData.gold[0];
+    if (goldItem) {
+      goldPrice = goldItem.price ? Number(goldItem.price).toLocaleString() : 'نامشخص';
+      goldChange = parseFloat(goldItem.change_percent) || 0;
+    }
+  }
+  
+  // ارزها
+  if (goldData.currency && goldData.currency.length > 0) {
+    const usd = goldData.currency.find(item => 
+      item.symbol?.toUpperCase() === 'USD' || 
+      item.name?.includes('دلار')
+    );
+    if (usd && usd.price) usdPrice = Number(usd.price).toLocaleString();
+    
+    const eur = goldData.currency.find(item => 
+      item.symbol?.toUpperCase() === 'EUR' || 
+      item.name?.includes('یورو')
+    );
+    if (eur && eur.price) eurPrice = Number(eur.price).toLocaleString();
+  }
+  
+  // ارزهای دیجیتال
+  if (goldData.crypto && goldData.crypto.length > 0) {
+    const btc = goldData.crypto.find(item => 
+      item.symbol?.toUpperCase() === 'BTC' || 
+      item.name?.includes('بیت‌کوین')
+    );
+    if (btc && btc.price) btcPrice = Number(btc.price).toLocaleString();
+    
+    const eth = goldData.crypto.find(item => 
+      item.symbol?.toUpperCase() === 'ETH' || 
+      item.name?.includes('اتریوم')
+    );
+    if (eth && eth.price) ethPrice = Number(eth.price).toLocaleString();
+  }
+}
+
+// --- استخراج داده‌های کیفیت هوا ---
+let aqi = 'نامشخص';
+let aqiStatus = 'نامشخص';
+let aqiCity = 'تهران';
+let aqiTime = 'نامشخص';
+
+if (airData) {
+  aqi = airData.aqi || 'نامشخص';
+  aqiCity = airData.city?.name || 'تهران';
+  aqiTime = airData.time?.s || 'نامشخص';
+  
+  if (aqi !== 'نامشخص') {
+    const aqiNum = Number(aqi);
+    if (aqiNum <= 50) aqiStatus = 'خوب 😊';
+    else if (aqiNum <= 100) aqiStatus = 'قابل قبول 🙂';
+    else if (aqiNum <= 150) aqiStatus = 'ناسالم برای گروه‌های حساس 😷';
+    else if (aqiNum <= 200) aqiStatus = 'ناسالم 😷';
+    else if (aqiNum <= 300) aqiStatus = 'بسیار ناسالم 🤢';
+    else aqiStatus = 'خطرناک 🚨';
+  }
+}
+
+// --- استخراج داده‌های بورس ---
+let marketTotal = 'نامشخص';
+let topGainers = [];
+let topLosers = [];
+
+if (marketData) {
+  marketTotal = marketData.total_value ? Number(marketData.total_value).toLocaleString() : 'نامشخص';
+  topGainers = marketData.top_gainers || [];
+  topLosers = marketData.top_losers || [];
+}
+
+// --- استخراج داده‌های کامودیتی ---
+let commodityItems = [];
+if (commodityData && commodityData.items) {
+  commodityItems = commodityData.items.slice(0, 6);
+}
+
+// --- تاریخ به‌روزرسانی ---
+const lastUpdate = new Date().toLocaleString('fa-IR');
+
+// --- لیست اخبار نمونه ---
+const newsItems = [
+  { id: 1, title: "قیمت طلا امروز ۲۰ درصد افزایش یافت", date: "۱۴۰۴/۰۲/۱۰" },
+  { id: 2, title: "هوای تهران در شرایط ناسالم قرار گرفت", date: "۱۴۰۴/۰۲/۰۹" },
+  { id: 3, title: "ارزش دلار در بازار آزاد کاهش یافت", date: "۱۴۰۴/۰۲/۰۸" },
+];
+---
+
+<!-- --- بخش HTML (Template) --- -->
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>اخبار فوری HSC</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: 'Vazir', 'Tahoma', 'Arial', sans-serif;
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 0 20px 40px;
+        direction: rtl;
+        background: #f0f2f5;
+        color: #1a1a2e;
+      }
+      .header {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 16px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .header h1 { font-size: 28px; margin-bottom: 5px; letter-spacing: 1px; }
+      .header .update-time { font-size: 14px; opacity: 0.8; margin-top: 5px; }
+      .grid-2col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 25px;
+      }
+      @media (max-width: 700px) { .grid-2col { grid-template-columns: 1fr; } }
+      .card {
+        background: white;
+        border-radius: 14px;
+        padding: 20px 22px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        transition: transform 0.2s;
+      }
+      .card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+      .card h3 {
+        font-size: 15px;
+        color: #555;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 10px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .card .value { font-size: 28px; font-weight: bold; color: #1a1a2e; margin: 5px 0; }
+      .card .sub { font-size: 14px; color: #666; margin: 4px 0; }
+      .card .change-positive { color: #27ae60; }
+      .card .change-negative { color: #e74c3c; }
+      .badge {
+        display: inline-block;
+        padding: 3px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
+      }
+      .badge-green { background: #d5f5e3; color: #1a7a42; }
+      .badge-yellow { background: #fdebd0; color: #a04000; }
+      .badge-orange { background: #fadbd8; color: #922b21; }
+      .badge-red { background: #f5b7b1; color: #78281f; }
+      .section-title {
+        font-size: 20px;
+        margin: 30px 0 15px;
+        color: #1a1a2e;
+        border-right: 4px solid #e94560;
+        padding-right: 12px;
+      }
+      hr { margin: 30px 0 20px; border: 0; border-top: 2px solid #eee; }
+      .news-item {
+        background: white;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+      }
+      .news-item:hover { background: #fafafa; }
+      .news-item strong { font-size: 16px; display: block; }
+      .news-item small { color: #888; font-size: 13px; }
+      .symbol-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3px 15px;
+        font-size: 14px;
+      }
+      @media (max-width: 500px) { .symbol-list { grid-template-columns: 1fr; } }
+      .symbol-list .sym {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        border-bottom: 1px dashed #f5f5f5;
+      }
+      .symbol-list .sym span:first-child { color: #444; }
+      .symbol-list .sym span:last-child { font-weight: 500; color: #1a1a2e; }
+      .footer-note {
+        text-align: center;
+        color: #aaa;
+        font-size: 12px;
+        margin-top: 40px;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>📊 اخبار فوری HSC</h1>
+      <div class="update-time">🕒 آخرین به‌روزرسانی: {lastUpdate}</div>
+    </div>
+
+    <div class="grid-2col">
+      <div class="card">
+        <h3>💰 طلا و ارز</h3>
+        <div class="value">{goldPrice}</div>
+        <div class="sub">
+          <span class={goldChange >= 0 ? 'change-positive' : 'change-negative'}>
+            تغییر: {goldChange >= 0 ? '+' : ''}{goldChange}%
+          </span>
+        </div>
+        <div class="sub">💵 دلار: {usdPrice}</div>
+        <div class="sub">💶 یورو: {eurPrice}</div>
+        <div class="sub">🪙 بیت‌کوین: {btcPrice}</div>
+        <div class="sub">🔷 اتریوم: {ethPrice}</div>
+      </div>
+
+      <div class="card">
+        <h3>🌫️ کیفیت هوا</h3>
+        <div class="value">{aqi}</div>
+        <div class="sub" style="font-size:18px; margin-top:5px;">
+          <span class={['badge', 
+            aqi <= 50 ? 'badge-green' : 
+            aqi <= 100 ? 'badge-yellow' : 
+            aqi <= 150 ? 'badge-orange' : 'badge-red'
+          ]}>
+            {aqiStatus}
+          </span>
+        </div>
+        <div class="sub">📍 {aqiCity}</div>
+        <div class="sub">🕒 {aqiTime}</div>
+      </div>
+    </div>
+
+    <div class="grid-2col">
+      <div class="card">
+        <h3>🏗️ کامودیتی‌ها</h3>
+        {commodityItems.length > 0 ? (
+          <div class="symbol-list">
+            {commodityItems.map(item => (
+              <div class="sym">
+                <span>{item.name || item.symbol || 'نامشخص'}</span>
+                <span>{item.price ? Number(item.price).toLocaleString() : '---'}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="sub">📭 داده‌ای موجود نیست</div>
+        )}
+      </div>
+
+      <div class="card">
+        <h3>📈 بورس</h3>
+        <div class="value" style="font-size:20px;">{marketTotal}</div>
+        
+        <div class="sub" style="margin-top:12px; font-weight:bold; color:#27ae60;">🔺 بیشترین رشد:</div>
+        {topGainers.length > 0 ? (
+          <div class="symbol-list">
+            {topGainers.slice(0, 3).map(item => (
+              <div class="sym">
+                <span>{item.name}</span>
+                <span class="change-positive">{item.change > 0 ? '+' : ''}{item.change}%</span>
+              </div>
+            ))}
+          </div>
+        ) : <div class="sub">---</div>}
+        
+        <div class="sub" style="margin-top:10px; font-weight:bold; color:#e74c3c;">🔻 بیشترین افت:</div>
+        {topLosers.length > 0 ? (
+          <div class="symbol-list">
+            {topLosers.slice(0, 3).map(item => (
+              <div class="sym">
+                <span>{item.name}</span>
+                <span class="change-negative">{item.change}%</span>
+              </div>
+            ))}
+          </div>
+        ) : <div class="sub">---</div>}
+      </div>
+    </div>
+
+    <hr />
+    <h2 class="section-title">📰 آخرین اخبار</h2>
+    {newsItems.map((item) => (
+      <div class="news-item">
+        <strong>{item.title}</strong>
+        <small>{item.date}</small>
+      </div>
+    ))}
+
+    <div class="footer-note">
+      داده‌ها به‌صورت خودکار از منابع معتبر دریافت می‌شوند
+    </div>
+  </body>
+</html>
