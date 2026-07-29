@@ -1,6 +1,77 @@
 ---
 // src/pages/index.astro
-import { articles } from '../data/articles.js';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const blogDir = path.resolve(__dirname, '../content/blog');
+
+// --- تابع برای خواندن متادیتای مقالات از فایل‌های Markdown ---
+function getArticlesList() {
+  try {
+    const files = fs.readdirSync(blogDir);
+    const mdFiles = files.filter(file => file.endsWith('.md'));
+    
+    const articles = mdFiles.map((file) => {
+      const slug = file.replace('.md', '');
+      const filePath = path.join(blogDir, file);
+      const content = fs.readFileSync(filePath, 'utf8');
+      
+      // استخراج frontmatter به صورت ساده
+      const lines = content.split('\n');
+      let frontmatter = {};
+      let isFrontmatter = false;
+      let currentKey = '';
+      let currentValue = '';
+      
+      for (const line of lines) {
+        if (line.trim() === '---') {
+          if (!isFrontmatter) {
+            isFrontmatter = true;
+            continue;
+          } else {
+            break;
+          }
+        }
+        if (isFrontmatter) {
+          const match = line.match(/^(\w+):\s*(.*)$/);
+          if (match) {
+            if (currentKey) {
+              frontmatter[currentKey] = currentValue.trim();
+            }
+            currentKey = match[1];
+            currentValue = match[2];
+          } else if (currentKey) {
+            currentValue += ' ' + line.trim();
+          }
+        }
+      }
+      if (currentKey) {
+        frontmatter[currentKey] = currentValue.trim();
+      }
+      
+      // پردازش tags
+      if (frontmatter.tags && typeof frontmatter.tags === 'string') {
+        frontmatter.tags = frontmatter.tags.replace(/[\[\]"]/g, '').split(',').map(t => t.trim());
+      }
+      
+      return {
+        id: slug,
+        ...frontmatter,
+        slug: slug
+      };
+    });
+    
+    return articles;
+  } catch (error) {
+    console.error('❌ خطا در خواندن پوشه مقالات:', error);
+    return [];
+  }
+}
+
+const articles = getArticlesList();
 
 // --- تنظیمات سئو و اطلاعات سایت ---
 const siteTitle = "وبلاگ شخصی من";
@@ -12,30 +83,23 @@ const authorName = "علیرضا محمّدی جعفری";
 <!doctype html>
 <html lang="fa" dir="rtl">
   <head>
-    <!-- متا تگ‌های اصلی سئو -->
+    <!-- ... بقیه هدر و استایل‌ها مانند قبل ... -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{siteTitle}</title>
     <meta name="description" content={siteDescription} />
     <meta name="robots" content="index, follow" />
-    
-    <!-- متا تگ‌های Open Graph (برای شبکه‌های اجتماعی) -->
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={siteDescription} />
     <meta property="og:url" content={siteUrl} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content={`${siteUrl}/images/og-image.jpg`} />
-    
-    <!-- متا تگ‌های توییتر -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={siteTitle} />
     <meta name="twitter:description" content={siteDescription} />
-    
-    <!-- لینک‌های مهم برای سئو -->
     <link rel="canonical" href={siteUrl} />
     
     <style>
-      /* ===== استایل مدرن و زیبا ===== */
+      /* ... استایل‌های کامل مانند قبل ... */
       :root {
         --primary: #4f46e5;
         --primary-dark: #4338ca;
@@ -50,11 +114,7 @@ const authorName = "علیرضا محمّدی جعفری";
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
       
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
       
       body {
         font-family: 'Vazir', 'Tahoma', system-ui, sans-serif;
@@ -64,13 +124,8 @@ const authorName = "علیرضا محمّدی جعفری";
         padding: 0 20px;
       }
       
-      .container {
-        max-width: 820px;
-        margin: 0 auto;
-        padding: 30px 0 50px;
-      }
+      .container { max-width: 820px; margin: 0 auto; padding: 30px 0 50px; }
       
-      /* هدر سایت */
       .site-header {
         text-align: center;
         padding: 40px 0 30px;
@@ -95,7 +150,6 @@ const authorName = "علیرضا محمّدی جعفری";
         -webkit-text-fill-color: var(--gray-700);
       }
       
-      /* لیست مقالات */
       .articles-grid {
         display: flex;
         flex-direction: column;
@@ -194,7 +248,6 @@ const authorName = "علیرضا محمّدی جعفری";
         color: var(--primary-dark);
       }
       
-      /* فوتر */
       .site-footer {
         margin-top: 60px;
         text-align: center;
@@ -204,33 +257,21 @@ const authorName = "علیرضا محمّدی جعفری";
         font-size: 0.9rem;
       }
       
-      /* واکنش‌گرایی */
       @media (max-width: 640px) {
-        .site-header h1 {
-          font-size: 2rem;
-        }
-        .article-card {
-          padding: 20px;
-        }
-        .article-card h2 {
-          font-size: 1.3rem;
-        }
-        .article-card .meta {
-          flex-direction: column;
-          align-items: flex-start;
-        }
+        .site-header h1 { font-size: 2rem; }
+        .article-card { padding: 20px; }
+        .article-card h2 { font-size: 1.3rem; }
+        .article-card .meta { flex-direction: column; align-items: flex-start; }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <!-- هدر سایت -->
       <header class="site-header">
         <h1>📝 وبلاگ من</h1>
         <p class="subtitle">{siteDescription}</p>
       </header>
       
-      <!-- لیست مقالات -->
       <main>
         <div class="articles-grid">
           {articles.map((article) => (
@@ -238,19 +279,19 @@ const authorName = "علیرضا محمّدی جعفری";
               <div class="meta">
                 <span class="date">📅 {article.date}</span>
                 <div class="tag-group">
-                  {article.tags.map((tag) => (
+                  {article.tags?.map((tag) => (
                     <span class="tag">#{tag}</span>
                   ))}
                 </div>
               </div>
               
               <h2>
-                <a href={`/posts/${article.id}`}>{article.title}</a>
+                <a href={`/posts/${article.slug}`}>{article.title}</a>
               </h2>
               
               <p class="excerpt">{article.excerpt}</p>
               
-              <a href={`/posts/${article.id}`} class="read-more">
+              <a href={`/posts/${article.slug}`} class="read-more">
                 ادامه مطلب ←
               </a>
             </article>
@@ -258,7 +299,6 @@ const authorName = "علیرضا محمّدی جعفری";
         </div>
       </main>
       
-      <!-- فوتر -->
       <footer class="site-footer">
         <p>© {new Date().getFullYear()} تمامی حقوق محفوظ است | {authorName}</p>
         <p style="margin-top: 6px; font-size: 0.8rem;">
