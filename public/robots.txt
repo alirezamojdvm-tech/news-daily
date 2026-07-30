@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://vet.hsc-co.ir/sitemap-index.xml
