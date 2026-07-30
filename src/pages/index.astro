@@ -1,14 +1,16 @@
 ---
 // src/pages/index.astro
-import { articles } from '../data/articles.js';
+import { getCollection } from 'astro:content';
 
 const siteTitle = "وبلاگ علیرضا محمّدی جعفری";
 const siteDescription = "مقالات آموزشی درباره سئو، دیجیتال مارکتینگ و توسعه وب";
 const siteUrl = "https://news-daily-e3a.pages.dev";
 const authorName = "علیرضا محمّدی جعفری";
 
-const allTags = [...new Set(articles.flatMap((a) => a.tags))];
-const sortedArticles = [...articles].sort((a, b) => b.id - a.id);
+// ← دیگه articles.js نیست؛ همه چیز از فایل‌های Markdown میاد
+const allPosts = await getCollection('posts');
+const sortedPosts = allPosts.sort((a, b) => b.id.localeCompare(a.id));
+const allTags = [...new Set(allPosts.flatMap((p) => p.data.tags))];
 ---
 
 <!doctype html>
@@ -23,15 +25,11 @@ const sortedArticles = [...articles].sort((a, b) => b.id - a.id);
     <meta property="og:description" content={siteDescription} />
     <meta property="og:url" content={siteUrl} />
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={siteTitle} />
-    <meta name="twitter:description" content={siteDescription} />
     <link rel="canonical" href={siteUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <!-- Prevent dark mode flash -->
     <script is:inline>
       (function () {
         const stored = localStorage.getItem('theme');
@@ -43,10 +41,8 @@ const sortedArticles = [...articles].sort((a, b) => b.id - a.id);
     </script>
 
     <style>
-      /* ─── Design Tokens ─── */
       :root {
         --primary: #4f46e5;
-        --primary-light: #818cf8;
         --bg: #f8fafc;
         --bg-card: #ffffff;
         --bg-tag: #eef2ff;
@@ -54,8 +50,8 @@ const sortedArticles = [...articles].sort((a, b) => b.id - a.id);
         --text-muted: #64748b;
         --text-tag: #4f46e5;
         --border: #e2e8f0;
-        --shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
-        --shadow-hover: 0 8px 32px rgba(79, 70, 229, 0.12);
+        --shadow: 0 2px 16px rgba(0,0,0,0.06);
+        --shadow-hover: 0 8px 32px rgba(79,70,229,0.12);
         --radius: 14px;
         --transition: all 0.25s ease;
       }
@@ -67,277 +63,147 @@ const sortedArticles = [...articles].sort((a, b) => b.id - a.id);
         --text-muted: #94a3b8;
         --text-tag: #a5b4fc;
         --border: #334155;
-        --shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
-        --shadow-hover: 0 8px 32px rgba(79, 70, 229, 0.25);
+        --shadow: 0 2px 16px rgba(0,0,0,0.3);
+        --shadow-hover: 0 8px 32px rgba(79,70,229,0.25);
       }
-
       * { margin: 0; padding: 0; box-sizing: border-box; }
-
       body {
         font-family: 'Vazirmatn', 'Tahoma', system-ui, sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        line-height: 1.8;
-        padding: 0 20px;
+        background: var(--bg); color: var(--text);
+        line-height: 1.8; padding: 0 20px;
         transition: background 0.3s, color 0.3s;
       }
-
       .container { max-width: 840px; margin: 0 auto; padding: 30px 0 60px; }
 
-      /* ─── Header ─── */
+      /* Header */
       .site-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 48px 0 32px;
-        border-bottom: 1px solid var(--border);
-        margin-bottom: 36px;
-        position: relative;
+        display: flex; flex-direction: column; align-items: center;
+        text-align: center; padding: 48px 0 32px;
+        border-bottom: 1px solid var(--border); margin-bottom: 36px;
       }
-      .header-top {
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        margin-bottom: 24px;
-      }
+      .header-top { width: 100%; display: flex; justify-content: flex-start; margin-bottom: 24px; }
       .dark-toggle {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 50px;
-        padding: 6px 14px;
-        cursor: pointer;
-        font-size: 1.1rem;
-        color: var(--text);
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-family: inherit;
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 50px; padding: 6px 14px; cursor: pointer;
+        font-size: 1rem; color: var(--text); font-family: inherit;
+        transition: var(--transition); display: flex; align-items: center; gap: 6px;
       }
       .dark-toggle:hover { border-color: var(--primary); }
-      .dark-toggle .label { font-size: 0.8rem; color: var(--text-muted); }
+      .toggle-label { font-size: 0.8rem; color: var(--text-muted); }
       .site-header h1 {
-        font-size: clamp(2rem, 5vw, 2.8rem);
-        font-weight: 800;
+        font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800;
         background: linear-gradient(135deg, var(--primary), #7c3aed);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: -0.5px;
-        margin-bottom: 8px;
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text; margin-bottom: 8px;
       }
-      .site-header .subtitle {
-        color: var(--text-muted);
-        font-size: 1rem;
-        max-width: 500px;
-      }
+      .site-header .subtitle { color: var(--text-muted); font-size: 1rem; max-width: 500px; }
 
-      /* ─── Controls: Search + Filter ─── */
-      .controls {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        margin-bottom: 32px;
-      }
-      .search-wrap {
-        position: relative;
-      }
+      /* Controls */
+      .controls { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+      .search-wrap { position: relative; }
       .search-icon {
-        position: absolute;
-        right: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-        font-size: 1rem;
-        pointer-events: none;
+        position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+        color: var(--text-muted); pointer-events: none;
       }
       #search {
-        width: 100%;
-        padding: 13px 44px 13px 18px;
-        border: 1.5px solid var(--border);
-        border-radius: var(--radius);
-        background: var(--bg-card);
-        color: var(--text);
-        font-size: 1rem;
-        font-family: inherit;
-        outline: none;
-        transition: var(--transition);
+        width: 100%; padding: 13px 44px 13px 18px;
+        border: 1.5px solid var(--border); border-radius: var(--radius);
+        background: var(--bg-card); color: var(--text);
+        font-size: 1rem; font-family: inherit; outline: none; transition: var(--transition);
       }
-      #search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12); }
+      #search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.12); }
       #search::placeholder { color: var(--text-muted); }
-
-      .tag-filters {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-      }
+      .tag-filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
       .filter-label { font-size: 0.85rem; color: var(--text-muted); margin-left: 4px; }
       .tag-btn {
-        background: var(--bg-card);
-        border: 1.5px solid var(--border);
-        color: var(--text-muted);
-        padding: 5px 16px;
-        border-radius: 50px;
-        font-size: 0.82rem;
-        font-weight: 500;
-        cursor: pointer;
-        font-family: inherit;
-        transition: var(--transition);
-        white-space: nowrap;
+        background: var(--bg-card); border: 1.5px solid var(--border);
+        color: var(--text-muted); padding: 5px 16px; border-radius: 50px;
+        font-size: 0.82rem; font-weight: 500; cursor: pointer;
+        font-family: inherit; transition: var(--transition);
       }
       .tag-btn:hover { border-color: var(--primary); color: var(--primary); }
-      .tag-btn.active {
-        background: var(--primary);
-        border-color: var(--primary);
-        color: white;
-      }
+      .tag-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
 
-      /* ─── Results count ─── */
-      .results-info {
-        font-size: 0.88rem;
-        color: var(--text-muted);
-        margin-bottom: 20px;
-        min-height: 1.4em;
-      }
+      .results-info { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; }
       .results-info span { color: var(--primary); font-weight: 600; }
 
-      /* ─── Article Cards ─── */
+      /* Cards */
       .articles-grid { display: flex; flex-direction: column; gap: 24px; }
-
       .article-card {
-        background: var(--bg-card);
-        border-radius: var(--radius);
-        padding: 28px 32px;
-        box-shadow: var(--shadow);
-        border: 1px solid transparent;
-        transition: var(--transition);
+        background: var(--bg-card); border-radius: var(--radius);
+        padding: 28px 32px; box-shadow: var(--shadow);
+        border: 1px solid transparent; transition: var(--transition);
         animation: fadeUp 0.4s ease both;
       }
       .article-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-hover);
+        transform: translateY(-3px); box-shadow: var(--shadow-hover);
         border-color: var(--border);
       }
       .article-card.hidden { display: none; }
-
       @keyframes fadeUp {
         from { opacity: 0; transform: translateY(12px); }
         to   { opacity: 1; transform: translateY(0); }
       }
-
       .card-meta {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 14px;
+        display: flex; justify-content: space-between;
+        align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
       }
       .card-meta-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-
       .date {
-        font-size: 0.82rem;
-        color: var(--text-muted);
-        background: var(--bg);
-        padding: 3px 12px;
-        border-radius: 20px;
-        border: 1px solid var(--border);
+        font-size: 0.82rem; color: var(--text-muted);
+        background: var(--bg); padding: 3px 12px;
+        border-radius: 20px; border: 1px solid var(--border);
       }
-      .reading-time {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-      }
-
+      .reading-time { font-size: 0.8rem; color: var(--text-muted); }
       .tag-group { display: flex; flex-wrap: wrap; gap: 6px; }
       .tag {
-        font-size: 0.76rem;
-        font-weight: 600;
-        background: var(--bg-tag);
-        color: var(--text-tag);
-        padding: 3px 12px;
-        border-radius: 20px;
-        transition: var(--transition);
-        cursor: pointer;
-        border: none;
-        font-family: inherit;
+        font-size: 0.76rem; font-weight: 600; background: var(--bg-tag);
+        color: var(--text-tag); padding: 3px 12px; border-radius: 20px;
+        cursor: pointer; border: none; font-family: inherit; transition: var(--transition);
       }
-      .tag:hover { opacity: 0.8; }
-
+      .tag:hover { opacity: 0.75; }
       .article-card h2 {
         font-size: clamp(1.2rem, 3vw, 1.55rem);
-        font-weight: 700;
-        margin: 0 0 10px;
-        line-height: 1.4;
+        font-weight: 700; margin: 0 0 10px; line-height: 1.4;
       }
       .article-card h2 a {
-        text-decoration: none;
-        color: var(--text);
-        transition: var(--transition);
+        text-decoration: none; color: var(--text); transition: var(--transition);
       }
       .article-card h2 a:hover { color: var(--primary); }
-
-      .excerpt {
-        color: var(--text-muted);
-        font-size: 0.97rem;
-        margin-bottom: 18px;
-        line-height: 1.9;
-      }
-
+      .excerpt { color: var(--text-muted); font-size: 0.97rem; margin-bottom: 18px; line-height: 1.9; }
       .read-more {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        color: var(--primary);
-        text-decoration: none;
-        transition: var(--transition);
-        padding: 6px 0;
+        display: inline-flex; align-items: center; gap: 6px;
+        font-weight: 600; font-size: 0.9rem; color: var(--primary);
+        text-decoration: none; transition: var(--transition);
         border-bottom: 1px solid transparent;
       }
       .read-more:hover { gap: 10px; border-bottom-color: var(--primary); }
 
-      /* ─── Empty State ─── */
       .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        color: var(--text-muted);
-        display: none;
+        text-align: center; padding: 60px 20px;
+        color: var(--text-muted); display: none;
       }
       .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
-      .empty-state p { font-size: 1rem; }
 
-      /* ─── Footer ─── */
       .site-footer {
-        margin-top: 60px;
-        text-align: center;
-        padding-top: 24px;
-        border-top: 1px solid var(--border);
-        color: var(--text-muted);
-        font-size: 0.88rem;
-        line-height: 2;
+        margin-top: 60px; text-align: center; padding-top: 24px;
+        border-top: 1px solid var(--border); color: var(--text-muted);
+        font-size: 0.88rem; line-height: 2;
       }
-
-      /* ─── Responsive ─── */
       @media (max-width: 640px) {
         .article-card { padding: 20px 18px; }
         .card-meta { flex-direction: column; align-items: flex-start; }
-        .header-top { justify-content: flex-start; }
       }
     </style>
   </head>
 
   <body>
     <div class="container">
-
-      <!-- Header -->
       <header class="site-header">
         <div class="header-top">
           <button class="dark-toggle" id="darkToggle" aria-label="تغییر تم">
             <span id="themeIcon">🌙</span>
-            <span class="label" id="themeLabel">تم تاریک</span>
+            <span class="toggle-label" id="themeLabel">تم تاریک</span>
           </button>
         </div>
         <h1>✍️ وبلاگ من</h1>
@@ -345,18 +211,11 @@ const sortedArticles = [...articles].sort((a, b) => b.id - a.id);
       </header>
 
       <main>
-        <!-- Search + Filter Controls -->
         <div class="controls">
           <div class="search-wrap">
             <span class="search-icon">🔍</span>
-            <input
-              type="search"
-              id="search"
-              placeholder="جستجو در مقالات..."
-              autocomplete="off"
-            />
+            <input type="search" id="search" placeholder="جستجو در مقالات..." autocomplete="off" />
           </div>
-
           <div class="tag-filters">
             <span class="filter-label">فیلتر:</span>
             <button class="tag-btn active" data-tag="همه">همه</button>
@@ -366,47 +225,40 @@ const sortedArticles = [...articles].sort((a, b) => b.id - a.id);
           </div>
         </div>
 
-        <!-- Results Info -->
-        <p class="results-info" id="resultsInfo">
-          <span id="visibleCount">{sortedArticles.length}</span> مقاله
+        <p class="results-info">
+          <span id="visibleCount">{sortedPosts.length}</span> مقاله
         </p>
 
-        <!-- Articles -->
         <div class="articles-grid" id="articlesGrid">
-          {sortedArticles.map((article, i) => (
+          {sortedPosts.map((post, i) => (
             <article
               class="article-card"
-              data-title={article.title}
-              data-excerpt={article.excerpt}
-              data-tags={article.tags.join(',')}
+              data-title={post.data.title}
+              data-excerpt={post.data.excerpt}
+              data-tags={post.data.tags.join(',')}
               style={`animation-delay: ${i * 60}ms`}
             >
               <div class="card-meta">
                 <div class="card-meta-right">
-                  <span class="date">📅 {article.date}</span>
-                  <span class="reading-time">⏱ {article.readingTime} دقیقه</span>
+                  <span class="date">📅 {post.data.date}</span>
+                  <span class="reading-time">⏱ {post.data.readingTime} دقیقه</span>
                 </div>
                 <div class="tag-group">
-                  {article.tags.map((tag) => (
+                  {post.data.tags.map((tag) => (
                     <button class="tag" data-filter-tag={tag}>#{tag}</button>
                   ))}
                 </div>
               </div>
 
               <h2>
-                <a href={`/posts/${article.id}`}>{article.title}</a>
+                <a href={`/posts/${post.id}`}>{post.data.title}</a>
               </h2>
-
-              <p class="excerpt">{article.excerpt}</p>
-
-              <a href={`/posts/${article.id}`} class="read-more">
-                ادامه مطلب ←
-              </a>
+              <p class="excerpt">{post.data.excerpt}</p>
+              <a href={`/posts/${post.id}`} class="read-more">ادامه مطلب ←</a>
             </article>
           ))}
         </div>
 
-        <!-- Empty state -->
         <div class="empty-state" id="emptyState">
           <div class="icon">🔍</div>
           <p>مقاله‌ای یافت نشد. عبارت دیگری را امتحان کنید.</p>
@@ -420,81 +272,61 @@ const sortedArticles = [...articles].sort((a, b) => b.id - a.id);
     </div>
 
     <script is:inline>
-      // ─── Dark Mode ───
+      // Dark Mode
       const html = document.documentElement;
       const toggle = document.getElementById('darkToggle');
       const icon = document.getElementById('themeIcon');
       const label = document.getElementById('themeLabel');
-
-      function updateToggleUI() {
-        const isDark = html.classList.contains('dark');
-        icon.textContent = isDark ? '☀️' : '🌙';
-        label.textContent = isDark ? 'تم روشن' : 'تم تاریک';
+      function updateUI() {
+        const dark = html.classList.contains('dark');
+        icon.textContent = dark ? '☀️' : '🌙';
+        label.textContent = dark ? 'تم روشن' : 'تم تاریک';
       }
-      updateToggleUI();
-
+      updateUI();
       toggle.addEventListener('click', () => {
         html.classList.toggle('dark');
         localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-        updateToggleUI();
+        updateUI();
       });
 
-      // ─── Search + Filter ───
+      // Search + Filter
       const searchInput = document.getElementById('search');
       const cards = document.querySelectorAll('.article-card');
       const tagBtns = document.querySelectorAll('.tag-btn');
-      const tagInCards = document.querySelectorAll('[data-filter-tag]');
+      const inCardTags = document.querySelectorAll('[data-filter-tag]');
       const visibleCount = document.getElementById('visibleCount');
       const emptyState = document.getElementById('emptyState');
+      let activeTag = 'همه', query = '';
 
-      let activeTag = 'همه';
-      let searchQuery = '';
-
-      function filterCards() {
+      function filter() {
         let count = 0;
         cards.forEach((card) => {
-          const title = card.dataset.title.toLowerCase();
-          const excerpt = card.dataset.excerpt.toLowerCase();
-          const tags = card.dataset.tags;
-          const q = searchQuery.toLowerCase();
-
-          const matchesSearch = !q || title.includes(q) || excerpt.includes(q) || tags.includes(q);
-          const matchesTag = activeTag === 'همه' || tags.includes(activeTag);
-
-          if (matchesSearch && matchesTag) {
-            card.classList.remove('hidden');
-            count++;
-          } else {
-            card.classList.add('hidden');
-          }
+          const q = query.toLowerCase();
+          const matchSearch = !q
+            || card.dataset.title.toLowerCase().includes(q)
+            || card.dataset.excerpt.toLowerCase().includes(q)
+            || card.dataset.tags.includes(q);
+          const matchTag = activeTag === 'همه' || card.dataset.tags.includes(activeTag);
+          card.classList.toggle('hidden', !(matchSearch && matchTag));
+          if (matchSearch && matchTag) count++;
         });
-
         visibleCount.textContent = count;
         emptyState.style.display = count === 0 ? 'block' : 'none';
       }
 
-      searchInput.addEventListener('input', (e) => {
-        searchQuery = e.target.value;
-        filterCards();
-      });
-
+      searchInput.addEventListener('input', (e) => { query = e.target.value; filter(); });
       tagBtns.forEach((btn) => {
         btn.addEventListener('click', () => {
           activeTag = btn.dataset.tag;
-          tagBtns.forEach((b) => b.classList.remove('active'));
-          btn.classList.add('active');
-          filterCards();
+          tagBtns.forEach((b) => b.classList.toggle('active', b.dataset.tag === activeTag));
+          filter();
         });
       });
-
-      // Clicking tags inside cards acts as filter
-      tagInCards.forEach((btn) => {
+      inCardTags.forEach((btn) => {
         btn.addEventListener('click', () => {
           activeTag = btn.dataset.filterTag;
-          tagBtns.forEach((b) => {
-            b.classList.toggle('active', b.dataset.tag === activeTag);
-          });
-          filterCards();
+          tagBtns.forEach((b) => b.classList.toggle('active', b.dataset.tag === activeTag));
+          filter();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       });
