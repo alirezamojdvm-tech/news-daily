@@ -7,8 +7,8 @@ const vetCode = "شماره نظام دامپزشکی: ۲۰۳۷۴۱۶";
 const phone = "۰۹۰۲۵۴۷۲۹۲۹";
 const email = "amojdvm@iran.ir";
 const siteUrl = "https://vet.hsc-co.ir";
-const siteTitle = "دکتر علیرضا محمّدی جعفری | مشاور دامپزشکی و ایمنی غذایی";
-const siteDescription = "مشاوره و خدمات تخصصی دامپزشکی، ایمنی مواد غذایی و مدیریت بهداشت. همراه با بیش از یک دهه تجربه.";
+const siteTitle = "دکتر جعفری دامپزشک در ورامین | بیمه حیوانات خانگی و مشاوره تخصصی";
+const siteDescription = "دکتر علیرضا محمدی جعفری، دامپزشک در ورامین با بیش از ۱۰ سال تجربه. مشاوره دامپزشکی، درمان حیوانات خانگی، ایمنی غذایی و ارائه بیمه حیوانات خانگی. تماس فوری.";
 // اطلاعات فرم
 const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree دریافت کنید
 ---
@@ -19,16 +19,79 @@ const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{siteTitle}</title>
     <meta name="description" content={siteDescription} />
+    <meta name="keywords" content="دکتر جعفری دامپزشک, دامپزشک در ورامین, دامپزشک با بیمه حیوانات خانگی, دکتر علیرضا محمدی جعفری, مشاوره دامپزشکی ورامین, بیمه حیوانات خانگی سامان" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#0a4a6c" />
+    <meta name="geo.region" content="IR-23" />
+    <meta name="geo.placename" content="ورامین" />
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={siteDescription} />
     <meta property="og:url" content={siteUrl} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fa_IR" />
     <link rel="canonical" href={siteUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VeterinaryCare",
+      "name": "دکتر علیرضا محمدی جعفری - دامپزشک در ورامین",
+      "alternateName": "دکتر جعفری دامپزشک",
+      "description": "دامپزشک در ورامین با تخصص در مشاوره دامپزشکی، درمان حیوانات خانگی، ایمنی مواد غذایی و ارائه بیمه حیوانات خانگی",
+      "url": "https://vet.hsc-co.ir",
+      "telephone": "+989025472929",
+      "email": "amojdvm@iran.ir",
+      "image": "https://vet.hsc-co.ir/images/avatar.jpg",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "ورامین",
+        "addressRegion": "تهران",
+        "addressCountry": "IR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "35.3252",
+        "longitude": "51.6472"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "ورامین" },
+        { "@type": "City", "name": "پیشوا" },
+        { "@type": "City", "name": "قرچک" },
+        { "@type": "City", "name": "پاکدشت" }
+      ],
+      "medicalSpecialty": ["Veterinary", "Food Safety"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "خدمات دامپزشکی",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "مشاوره و درمان دامپزشکی حیوانات خانگی"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "بیمه حیوانات خانگی"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "ایمنی مواد غذایی و HACCP"
+            }
+          }
+        ]
+      }
+    }
+    </script>
     <style>
       * {
         margin: 0;
@@ -748,13 +811,13 @@ const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree 
 
       <!-- ===== HERO ===== -->
       <section class="card hero">
-        <span class="badge">🐾 مشاوره و خدمات تخصصی دامپزشکی</span>
+        <span class="badge">🐾 دامپزشک در ورامین | بیمه حیوانات خانگی</span>
         <h1>
-          با <span class="highlight">تخصص و تعهد</span>،<br />
-          کنار شما و همراه حیوانات
+          <span class="highlight">دکتر جعفری دامپزشک</span> در ورامین<br />
+          با تخصص و تعهد کنار شما
         </h1>
         <p class="subtitle">
-          مشاوره، تشخیص، درمان و مدیریت بهداشت در حوزه‌های دامپزشکی، صنایع غذایی و ایمنی
+          مشاوره، تشخیص و درمان حیوانات خانگی، ایمنی مواد غذایی و ارائه <strong>بیمه حیوانات خانگی</strong> — خدمت‌رسانی در ورامین و شهرهای اطراف
         </p>
         <div class="quote">
           «گوش می‌سپارم به نیازهای بی‌صدا؛ تا فردا سرشار از لبخندهای بی‌کلام باشد.»
@@ -777,8 +840,8 @@ const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree 
             <div class="label">گواهی و دوره تخصصی</div>
           </div>
           <div class="stat-item">
-            <div class="num">۴</div>
-            <div class="label">حوزه تخصصی اصلی</div>
+            <div class="num">ورامین</div>
+            <div class="label">محل ارائه خدمات</div>
           </div>
         </div>
       </section>
@@ -787,24 +850,32 @@ const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree 
       <section class="card">
         <div class="intro-grid">
           <div class="intro-avatar">
-            <img src="/images/avatar.jpg" alt={fullName} width="96" height="96" />
+            <img src="/images/avatar.jpg" alt="دکتر علیرضا محمدی جعفری دامپزشک در ورامین" width="96" height="96" />
           </div>
           <div class="intro-text">
-            <div class="name">{fullName}</div>
-            <div class="role">{role}</div>
+            <div class="name">دکتر {fullName}</div>
+            <div class="role">{role} | دامپزشک در ورامین</div>
             <span class="code">{vetCode}</span>
+            <p style="margin-top:12px; font-size:14.5px; color:var(--text-mid); line-height:1.8;">
+              دکتر جعفری دامپزشک با بیش از یک دهه تجربه، آماده ارائه خدمات تخصصی دامپزشکی و <strong>بیمه حیوانات خانگی</strong> در ورامین و مناطق اطراف است.
+            </p>
           </div>
         </div>
       </section>
 
       <!-- ===== SERVICES ===== -->
       <section class="card">
-        <div class="section-label">⚡ خدمات تخصصی</div>
+        <div class="section-label">⚡ خدمات تخصصی دامپزشکی در ورامین</div>
         <div class="services-grid">
           <div class="service-item">
             <span class="icon" aria-hidden="true">🩺</span>
             <span class="label">مشاوره دامپزشکی</span>
-            <span class="desc">تشخیص، درمان و جراحی‌های بافت نرم</span>
+            <span class="desc">تشخیص، درمان و جراحی‌های بافت نرم حیوانات خانگی</span>
+          </div>
+          <div class="service-item">
+            <span class="icon" aria-hidden="true">🛡️</span>
+            <span class="label">بیمه حیوانات خانگی</span>
+            <span class="desc">ارائه و مشاوره بیمه درمان حیوانات خانگی (سامان و ...)</span>
           </div>
           <div class="service-item">
             <span class="icon" aria-hidden="true">🔬</span>
@@ -816,11 +887,6 @@ const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree 
             <span class="label">صنایع غذایی و ایمنی</span>
             <span class="desc">HACCP، ISO22000، نظارت بر کشتارگاه</span>
           </div>
-          <div class="service-item">
-            <span class="icon" aria-hidden="true">📊</span>
-            <span class="label">پژوهش و آموزش</span>
-            <span class="desc">بیماری‌های مشترک، گیاهان دارویی</span>
-          </div>
         </div>
       </section>
 
@@ -829,6 +895,7 @@ const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree 
         <div class="section-label">📋 سوابق و تجربیات</div>
         <div class="exp-grid">
           <div class="exp-item"><span class="bullet">✦</span> جراحی‌های بافت نرم و داروسازی بالینی دامپزشکی</div>
+          <div class="exp-item"><span class="bullet">✦</span> ارائه و مشاوره <strong>بیمه حیوانات خانگی</strong> (همکاری با بیمه سامان)</div>
           <div class="exp-item"><span class="bullet">✦</span> مشاور تخصصی پرورش گوساله و طیور (بوقلمون)</div>
           <div class="exp-item"><span class="bullet">✦</span> پژوهشگر بیماری‌های مشترک انسان و دام</div>
           <div class="exp-item"><span class="bullet">✦</span> نظارت فنی دامپزشکی در کشتارگاه‌ها و بسته‌بندی فرآورده‌های خام دامی</div>
@@ -837,6 +904,9 @@ const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree 
         </div>
         <div class="edu-box">
           🎓 <strong>تحصیلات:</strong> دکتری دامپزشکی، دانشگاه آزاد گرمسار
+        </div>
+        <div class="extra-box" style="margin-top:14px;">
+          📍 <strong>محل خدمت:</strong> دامپزشک در ورامین و خدمت‌رسانی به شهرهای پیشوا، قرچک، پاکدشت و اطراف تهران
         </div>
       </section>
 
@@ -860,8 +930,8 @@ const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree 
 
       <!-- ===== FORM ===== -->
       <section class="card form-card" id="consult">
-        <div class="form-title">📋 درخواست مشاوره</div>
-        <div class="form-sub">فرم زیر را پر کنید تا در اسرع وقت با شما تماس بگیرم.</div>
+        <div class="form-title">📋 درخواست مشاوره دامپزشکی یا بیمه حیوانات خانگی</div>
+        <div class="form-sub">فرم زیر را پر کنید تا در اسرع وقت با شما تماس بگیرم — دکتر جعفری دامپزشک در ورامین</div>
         <form id="consult-form" action={`https://formspree.io/f/${formspreeId}`} method="POST">
           <div class="form-group">
             <label for="name">نام و نام خانوادگی</label>
@@ -892,8 +962,11 @@ const formspreeId = "meeywgdl"; // شناسه فرم خود را از Formspree 
         <p>
           📞 <a href={`tel:${phone}`}>{phone}</a> &nbsp;|&nbsp; ✉️ <a href={`mailto:${email}`}>{email}</a>
         </p>
+        <p style="margin-top:6px; font-size:13px;">
+          دکتر جعفری دامپزشک در ورامین | بیمه حیوانات خانگی
+        </p>
         <p style="margin-top:8px; font-size:12.5px; opacity:0.7;">
-          © {new Date().getFullYear()} {fullName} — تمامی حقوق محفوظ است
+          © {new Date().getFullYear()} دکتر {fullName} — تمامی حقوق محفوظ است
         </p>
       </footer>
     </div>
