@@ -1,0 +1,1166 @@
+---
+// src/components/VetTemplate.astro
+
+export interface Props {
+  city: any;
+  fullName: string;
+  role: string;
+  vetCode: string;
+  phone: string;
+  email: string;
+  siteUrl: string;
+  formspreeId: string;
+}
+
+const { city, fullName, role, vetCode, phone, email, siteUrl, formspreeId } = Astro.props;
+const siteTitle = city.title;
+const siteDescription = city.description;
+---
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{siteTitle}</title>
+    <meta name="description" content={siteDescription} />
+    <meta name="keywords" content={city.keywords} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0a4a6c" />
+    <meta name="geo.region" content="IR-23" />
+    <meta name="geo.placename" content={city.name} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={siteDescription} />
+    <meta property="og:url" content={city.canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fa_IR" />
+    <link rel="canonical" href={city.canonical} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VeterinaryCare",
+      "name": `دکتر ${fullName} - دامپزشک در ${city.name}`,
+      "alternateName": "دکتر جعفری دامپزشک",
+      "description": `دامپزشک در ${city.name} با تخصص در مشاوره دامپزشکی، درمان حیوانات خانگی، ایمنی مواد غذایی و ارائه بیمه حیوانات خانگی`,
+      "url": ${JSON.stringify(city.canonical)},
+      "telephone": `+98${phone.replace(/[^0-9]/g, '')}`,
+      "email": ${JSON.stringify(email)},
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": ${JSON.stringify(city.name)},
+        "addressRegion": "تهران",
+        "addressCountry": "IR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": ${JSON.stringify(city.latitude)},
+        "longitude": ${JSON.stringify(city.longitude)}
+      },
+      "areaServed": [
+        { "@type": "City", "name": ${JSON.stringify(city.name)} },
+        { "@type": "City", "name": "ورامین" },
+        { "@type": "City", "name": "پیشوا" },
+        { "@type": "City", "name": "قرچک" },
+        { "@type": "City", "name": "پاکدشت" }
+      ],
+      "medicalSpecialty": ["Veterinary", "Food Safety"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "خدمات دامپزشکی",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "مشاوره و درمان دامپزشکی حیوانات خانگی"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "بیمه حیوانات خانگی"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "ایمنی مواد غذایی و HACCP"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+    
+    <style>
+      /* تمام استایل‌های قبلی شما - همان کدی که در index.astro داشتید */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --primary: #0a4a6c;
+        --primary-light: #e8f4fb;
+        --primary-mid: #1a6a94;
+        --primary-dark: #06344d;
+        --secondary: #2ecc71;
+        --secondary-dark: #27ae60;
+        --gold: #f1c40f;
+        --gold-bg: #fef9e7;
+        --text: #132533;
+        --text-mid: #3a5a6a;
+        --text-muted: #6b7c8c;
+        --bg: #f0f7fb;
+        --surface: #ffffff;
+        --shadow: 0 8px 32px rgba(10, 74, 108, 0.10);
+        --shadow-hover: 0 16px 48px rgba(10, 74, 108, 0.16);
+        --r-card: 24px;
+        --r-pill: 50px;
+        --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        direction: rtl;
+        line-height: 1.75;
+        padding: 20px;
+        background-image:
+          radial-gradient(circle at 10% 20%, rgba(10,74,108,0.04) 0%, transparent 40%),
+          radial-gradient(circle at 90% 80%, rgba(46,204,113,0.04) 0%, transparent 40%);
+      }
+      .page { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+      .card {
+        background: var(--surface);
+        border-radius: var(--r-card);
+        box-shadow: var(--shadow);
+        padding: 32px 40px;
+        border: 1px solid rgba(10, 74, 108, 0.06);
+        animation: fadeUp 0.55s ease both;
+        transition: var(--transition);
+      }
+      .card:hover { box-shadow: var(--shadow-hover); }
+      .card:nth-child(1) { animation-delay: 0.00s; }
+      .card:nth-child(2) { animation-delay: 0.05s; }
+      .card:nth-child(3) { animation-delay: 0.10s; }
+      .card:nth-child(4) { animation-delay: 0.15s; }
+      .card:nth-child(5) { animation-delay: 0.20s; }
+      .card:nth-child(6) { animation-delay: 0.25s; }
+      .card:nth-child(7) { animation-delay: 0.30s; }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 20px 28px;
+      }
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .logo-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(145deg, var(--primary) 0%, var(--primary-mid) 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: #fff;
+        flex-shrink: 0;
+        box-shadow: 0 6px 18px rgba(10,74,108,0.25);
+      }
+      .logo-text {
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--primary);
+        letter-spacing: -0.3px;
+      }
+      .contact-badge {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 14px;
+        color: var(--text-mid);
+      }
+      .contact-badge a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+        transition: var(--transition);
+        padding: 6px 12px;
+        border-radius: 10px;
+      }
+      .contact-badge a:hover {
+        background: var(--primary-light);
+        color: var(--primary-dark);
+      }
+      .hero {
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        padding: 48px 40px;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fcff 100%);
+      }
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: -120px;
+        right: -80px;
+        width: 340px;
+        height: 340px;
+        background: radial-gradient(circle, rgba(10,74,108,.07) 0%, transparent 65%);
+        pointer-events: none;
+      }
+      .hero::after {
+        content: '';
+        position: absolute;
+        bottom: -80px;
+        left: -60px;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(46,204,113,.06) 0%, transparent 65%);
+        pointer-events: none;
+      }
+      .hero .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--gold-bg);
+        color: #9a7b0a;
+        border: 1px solid #f5e6a3;
+        padding: 7px 22px;
+        border-radius: 40px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(241,196,15,0.15);
+      }
+      .hero h1 {
+        font-size: 34px;
+        font-weight: 900;
+        color: var(--text);
+        line-height: 1.4;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+      }
+      .hero h1 .highlight {
+        color: var(--primary);
+        position: relative;
+      }
+      .hero h1 .highlight::after {
+        content: '';
+        position: absolute;
+        bottom: 3px;
+        right: 0;
+        left: 0;
+        height: 5px;
+        background: linear-gradient(90deg, var(--gold), #f39c12);
+        border-radius: 3px;
+        opacity: 0.85;
+      }
+      .hero .subtitle {
+        font-size: 17px;
+        color: var(--text-mid);
+        max-width: 620px;
+        margin: 0 auto 22px;
+        line-height: 2;
+        position: relative;
+        z-index: 1;
+      }
+      .hero .quote {
+        font-size: 17px;
+        font-weight: 500;
+        color: var(--primary-dark);
+        background: linear-gradient(135deg, var(--primary-light) 0%, #f0f9ff 100%);
+        padding: 16px 24px;
+        border-radius: 18px;
+        border-right: 5px solid var(--primary);
+        max-width: 680px;
+        margin: 0 auto 28px;
+        line-height: 2;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 4px 16px rgba(10,74,108,0.06);
+      }
+      .cta-group {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        position: relative;
+        z-index: 1;
+      }
+      .btn-primary {
+        background: linear-gradient(145deg, var(--primary) 0%, var(--primary-mid) 100%);
+        color: #fff;
+        padding: 15px 38px;
+        border: none;
+        border-radius: var(--r-pill);
+        font-size: 17px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 24px rgba(10,74,108,.28);
+      }
+      .btn-primary:hover {
+        background: linear-gradient(145deg, var(--primary-dark) 0%, var(--primary) 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(10,74,108,.38);
+      }
+      .btn-secondary {
+        background: linear-gradient(145deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        color: #fff;
+        padding: 15px 38px;
+        border: none;
+        border-radius: var(--r-pill);
+        font-size: 17px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 24px rgba(46,204,113,.28);
+      }
+      .btn-secondary:hover {
+        background: linear-gradient(145deg, #219a52 0%, var(--secondary-dark) 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(46,204,113,.38);
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 8px;
+      }
+      .stat-item {
+        text-align: center;
+        padding: 18px 12px;
+        background: var(--primary-light);
+        border-radius: 18px;
+        transition: var(--transition);
+      }
+      .stat-item:hover {
+        background: var(--primary);
+        color: #fff;
+        transform: translateY(-3px);
+      }
+      .stat-item .num {
+        font-size: 28px;
+        font-weight: 900;
+        color: var(--primary);
+        line-height: 1.2;
+      }
+      .stat-item:hover .num { color: #fff; }
+      .stat-item .label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-mid);
+        margin-top: 4px;
+      }
+      .stat-item:hover .label { color: rgba(255,255,255,0.9); }
+      .intro-grid {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .intro-avatar {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: var(--primary-light);
+        border: 4px solid var(--primary);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        color: var(--primary);
+        font-weight: 700;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(10,74,108,0.18);
+      }
+      .intro-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .intro-text {
+        flex: 1;
+      }
+      .intro-text .name {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .intro-text .role {
+        font-size: 16px;
+        color: var(--text-mid);
+        font-weight: 600;
+      }
+      .intro-text .code {
+        font-size: 13px;
+        color: var(--primary);
+        background: var(--primary-light);
+        padding: 4px 16px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-top: 10px;
+        font-weight: 600;
+      }
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-top: 14px;
+      }
+      .service-item {
+        background: var(--primary-light);
+        border-radius: 18px;
+        padding: 24px 18px;
+        text-align: center;
+        transition: var(--transition);
+        border: 1px solid transparent;
+        cursor: default;
+      }
+      .service-item:hover {
+        background: linear-gradient(160deg, var(--primary) 0%, var(--primary-mid) 100%);
+        color: #fff;
+        transform: translateY(-6px);
+        box-shadow: 0 12px 28px rgba(10,74,108,.22);
+        border-color: transparent;
+      }
+      .service-item .icon {
+        font-size: 34px;
+        margin-bottom: 10px;
+        display: block;
+        transition: var(--transition);
+      }
+      .service-item:hover .icon {
+        transform: scale(1.12);
+      }
+      .service-item .label {
+        font-size: 15px;
+        font-weight: 800;
+      }
+      .service-item .desc {
+        font-size: 12.5px;
+        opacity: 0.85;
+        margin-top: 6px;
+        display: block;
+        line-height: 1.6;
+      }
+      .service-item:hover .label,
+      .service-item:hover .desc { color: #fff; }
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-muted);
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .section-label::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--primary-light), transparent);
+      }
+      .exp-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .exp-item {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px dashed rgba(10,74,108,0.12);
+        font-size: 14.5px;
+        transition: var(--transition);
+      }
+      .exp-item:last-child { border-bottom: none; }
+      .exp-item:hover {
+        padding-right: 6px;
+        color: var(--primary);
+      }
+      .exp-item .bullet {
+        color: var(--secondary);
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .edu-box {
+        margin-top: 18px;
+        padding: 14px 18px;
+        background: var(--primary-light);
+        border-radius: 14px;
+        font-size: 14px;
+        color: var(--text-mid);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .cert-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 24px;
+        font-size: 13.5px;
+      }
+      .cert-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 0;
+        transition: var(--transition);
+      }
+      .cert-item:hover {
+        color: var(--primary);
+        transform: translateX(-4px);
+      }
+      .cert-item .icon {
+        color: var(--secondary);
+        font-size: 15px;
+        font-weight: 700;
+        background: #e8f8f0;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .extra-box {
+        margin-top: 18px;
+        padding: 14px 18px;
+        background: var(--gold-bg);
+        border-radius: 14px;
+        font-size: 13.5px;
+        color: var(--text-mid);
+        border-right: 4px solid var(--gold);
+      }
+      .form-card {
+        background: linear-gradient(160deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .form-card::before {
+        content: '';
+        position: absolute;
+        top: -60px;
+        left: -40px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .form-card .form-title {
+        font-size: 22px;
+        font-weight: 800;
+        margin-bottom: 6px;
+        position: relative;
+      }
+      .form-card .form-sub {
+        font-size: 14.5px;
+        opacity: 0.88;
+        margin-bottom: 22px;
+        position: relative;
+      }
+      .form-group {
+        margin-bottom: 16px;
+        position: relative;
+      }
+      .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 6px;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 14px 18px;
+        border: none;
+        border-radius: 14px;
+        font-size: 15px;
+        font-family: inherit;
+        background: rgba(255,255,255,0.95);
+        color: var(--text);
+        transition: var(--transition);
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(255,255,255,0.3);
+      }
+      .form-group textarea {
+        resize: vertical;
+        min-height: 90px;
+      }
+      .btn-submit {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(145deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        color: #fff;
+        border: none;
+        border-radius: var(--r-pill);
+        font-size: 17px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 6px 20px rgba(46,204,113,0.3);
+      }
+      .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(46,204,113,.4);
+      }
+      .btn-submit:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .form-status {
+        display: none;
+        margin-top: 16px;
+        padding: 14px 18px;
+        border-radius: 14px;
+        font-size: 14.5px;
+        font-weight: 500;
+        text-align: center;
+        background: rgba(255,255,255,0.15);
+        color: #fff;
+      }
+      .form-status.success {
+        display: block;
+        background: rgba(46,204,113,0.3);
+        color: #d5f5e3;
+      }
+      .form-status.error {
+        display: block;
+        background: rgba(231,76,60,0.3);
+        color: #fadbd8;
+      }
+      .footer {
+        text-align: center;
+        font-size: 13.5px;
+        color: var(--text-muted);
+        border-top: 1px solid var(--primary-light);
+        padding-top: 24px;
+        margin-top: 4px;
+      }
+      .footer a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .footer .socials {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .footer .socials a {
+        font-size: 13.5px;
+        padding: 7px 16px;
+        border-radius: 24px;
+        background: var(--primary-light);
+        color: var(--primary);
+        transition: var(--transition);
+        font-weight: 600;
+      }
+      .footer .socials a:hover {
+        background: var(--primary);
+        color: #fff;
+        transform: translateY(-2px);
+      }
+      .fab-call {
+        position: fixed;
+        bottom: 28px;
+        left: 28px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(145deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        box-shadow: 0 8px 28px rgba(46,204,113,0.4);
+        text-decoration: none;
+        z-index: 100;
+        transition: var(--transition);
+        animation: pulse 2.5s infinite;
+      }
+      .fab-call:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 36px rgba(46,204,113,0.5);
+      }
+      @keyframes pulse {
+        0%, 100% { box-shadow: 0 8px 28px rgba(46,204,113,0.4); }
+        50% { box-shadow: 0 8px 28px rgba(46,204,113,0.4), 0 0 0 14px rgba(46,204,113,0.15); }
+      }
+      @media (max-width: 700px) {
+        body { padding: 14px; }
+        .page { gap: 16px; }
+        .card { padding: 24px 18px; }
+        .hero { padding: 32px 18px; }
+        .hero h1 { font-size: 25px; }
+        .hero .quote { font-size: 15px; padding: 14px 16px; }
+        .header {
+          flex-direction: column;
+          align-items: stretch;
+          text-align: center;
+          padding: 18px;
+        }
+        .logo-area { justify-content: center; }
+        .contact-badge { justify-content: center; flex-wrap: wrap; gap: 10px; }
+        .intro-grid { flex-direction: column; text-align: center; }
+        .services-grid { grid-template-columns: 1fr 1fr; }
+        .cert-grid { grid-template-columns: 1fr; }
+        .stats-grid { grid-template-columns: 1fr; gap: 10px; }
+        .cta-group { flex-direction: column; align-items: center; }
+        .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+        .fab-call { bottom: 20px; left: 20px; width: 56px; height: 56px; }
+      }
+      @media (max-width: 450px) {
+        .services-grid { grid-template-columns: 1fr; }
+        .hero h1 { font-size: 21px; }
+        .logo-text { font-size: 16px; }
+        .contact-badge { font-size: 13px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .card { animation: none; }
+        .service-item, .btn-primary, .btn-secondary, .btn-submit, .fab-call {
+          transition: none;
+        }
+        .fab-call { animation: none; }
+      }
+    
+/* ===== استایل‌های محتوای اختصاصی شهرها ===== */
+.city-special-content {
+  margin-top: 20px;
+  padding: 0 4px;
+}
+
+.city-special-content h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary);
+  margin: 30px 0 16px 0;
+  border-right: 5px solid var(--gold);
+  padding-right: 16px;
+}
+
+.city-special-content h3 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 24px 0 12px 0;
+}
+
+.city-special-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 16px 0;
+}
+
+.city-special-content ul li {
+  padding: 8px 0 8px 16px;
+  border-bottom: 1px solid rgba(10, 74, 108, 0.06);
+  font-size: 14.5px;
+  line-height: 1.8;
+  position: relative;
+  padding-right: 28px;
+}
+
+.city-special-content ul li::before {
+  content: "▸";
+  color: var(--secondary);
+  font-weight: 700;
+  position: absolute;
+  right: 0;
+}
+
+.city-special-content ul li:last-child {
+  border-bottom: none;
+}
+
+.stats-box {
+  background: var(--primary-light);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin: 16px 0 20px 0;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(10, 74, 108, 0.08);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-weight: 600;
+  color: var(--text-mid);
+}
+
+.stat-value {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.testimonials {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0 20px 0;
+}
+
+@media (max-width: 700px) {
+  .testimonials {
+    grid-template-columns: 1fr;
+  }
+}
+
+.testimonial {
+  background: var(--gold-bg);
+  border-radius: 16px;
+  padding: 18px 20px;
+  border-right: 4px solid var(--gold);
+}
+
+.testimonial p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text);
+  font-style: italic;
+}
+
+.testimonial .author {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.city-faq {
+  margin: 24px 0 16px 0;
+}
+
+.faq-item {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+
+.faq-item p {
+  font-size: 14.5px;
+  line-height: 1.8;
+  margin: 4px 0;
+}
+
+.faq-item p:first-child {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+@media (max-width: 450px) {
+  .city-special-content h2 {
+    font-size: 20px;
+  }
+  .city-special-content h3 {
+    font-size: 17px;
+  }
+  .stats-box {
+    padding: 14px 16px;
+  }
+  .stat-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+
+
+
+</style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- HEADER -->
+      <header class="card header">
+        <div class="logo-area">
+          <div class="logo-icon" aria-hidden="true">🐾</div>
+          <span class="logo-text">{fullName}</span>
+        </div>
+        <div class="contact-badge">
+          <span>📞 <a href={`tel:${phone}`}>{phone}</a></span>
+          <span>✉️ <a href={`mailto:${email}`}>{email}</a></span>
+        </div>
+      </header>
+
+      <!-- HERO -->
+      <section class="card hero">
+        <span class="badge">{city.heroBadge}</span>
+        <h1>
+          <span class="highlight">{city.heroTitle}</span><br />
+          با تخصص و تعهد کنار شما
+        </h1>
+        <p class="subtitle">
+          مشاوره، تشخیص و درمان حیوانات خانگی، ایمنی مواد غذایی و ارائه <strong>بیمه حیوانات خانگی</strong> — خدمت‌رسانی در {city.name} و شهرهای اطراف
+        </p>
+        <div class="quote">
+          «گوش می‌سپارم به نیازهای بی‌صدا؛ تا فردا سرشار از لبخندهای بی‌کلام باشد.»
+        </div>
+        <div class="cta-group">
+          <a href="#consult" class="btn-primary">📋 درخواست مشاوره</a>
+          <a href={`tel:${phone}`} class="btn-secondary">📞 تماس فوری</a>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section class="card">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="num">۱۰+</div>
+            <div class="label">سال تجربه تخصصی</div>
+          </div>
+          <div class="stat-item">
+            <div class="num">۸</div>
+            <div class="label">گواهی و دوره تخصصی</div>
+          </div>
+          <div class="stat-item">
+            <div class="num">{city.statCity}</div>
+            <div class="label">محل ارائه خدمات</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTRO -->
+      <section class="card">
+        <div class="intro-grid">
+          <div class="intro-avatar">
+            <img src="/images/avatar.jpg" alt={`دکتر ${fullName} دامپزشک در ${city.name}`} width="96" height="96" />
+          </div>
+          <div class="intro-text">
+            <div class="name">دکتر {fullName}</div>
+            <div class="role">{role} | دامپزشک در {city.name}</div>
+            <span class="code">{vetCode}</span>
+            <p style="margin-top:12px; font-size:14.5px; color:var(--text-mid); line-height:1.8;">
+              دکتر جعفری دامپزشک با بیش از یک دهه تجربه، آماده ارائه خدمات تخصصی دامپزشکی و <strong>بیمه حیوانات خانگی</strong> در {city.name} و مناطق اطراف است.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section class="card">
+        <div class="section-label">⚡ خدمات تخصصی دامپزشکی در {city.name}</div>
+        <div class="services-grid">
+          <div class="service-item">
+            <span class="icon" aria-hidden="true">🩺</span>
+            <span class="label">مشاوره دامپزشکی</span>
+            <span class="desc">تشخیص، درمان و جراحی‌های بافت نرم حیوانات خانگی</span>
+          </div>
+          <div class="service-item">
+            <span class="icon" aria-hidden="true">🛡️</span>
+            <span class="label">بیمه حیوانات خانگی</span>
+            <span class="desc">ارائه و مشاوره بیمه درمان حیوانات خانگی (سامان و ...)</span>
+          </div>
+          <div class="service-item">
+            <span class="icon" aria-hidden="true">🔬</span>
+            <span class="label">آزمایشگاه و تشخیص</span>
+            <span class="desc">هماتولوژی، سرولوژی، تصویربرداری</span>
+          </div>
+          <div class="service-item">
+            <span class="icon" aria-hidden="true">🏭</span>
+            <span class="label">صنایع غذایی و ایمنی</span>
+            <span class="desc">HACCP، ISO22000، نظارت بر کشتارگاه</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section class="card">
+        <div class="section-label">📋 سوابق و تجربیات</div>
+        <div class="exp-grid">
+          <div class="exp-item"><span class="bullet">✦</span> جراحی‌های بافت نرم و داروسازی بالینی دامپزشکی</div>
+          <div class="exp-item"><span class="bullet">✦</span> ارائه و مشاوره <strong>بیمه حیوانات خانگی</strong> (همکاری با بیمه سامان)</div>
+          <div class="exp-item"><span class="bullet">✦</span> مشاور تخصصی پرورش گوساله و طیور (بوقلمون)</div>
+          <div class="exp-item"><span class="bullet">✦</span> پژوهشگر بیماری‌های مشترک انسان و دام</div>
+          <div class="exp-item"><span class="bullet">✦</span> نظارت فنی دامپزشکی در کشتارگاه‌ها و بسته‌بندی فرآورده‌های خام دامی</div>
+          <div class="exp-item"><span class="bullet">✦</span> پیاده‌سازی سیستم‌های HACCP و ISO22000 در صنایع غذایی</div>
+          <div class="exp-item"><span class="bullet">✦</span> مدیر فنی آزمایشگاه کنترل کیفی و ایمنی مواد غذایی</div>
+        </div>
+        <div class="edu-box">
+          🎓 <strong>تحصیلات:</strong> دکتری دامپزشکی، دانشگاه آزاد گرمسار
+        </div>
+        <div class="extra-box" style="margin-top:14px;">
+          📍 <strong>محل خدمت:</strong> {city.serviceArea}
+        </div>
+      </section>
+
+<!-- ===== محتوای اختصاصی شهر ===== -->
+<section class="card">
+  <div set:html={city.localContent} />
+</section>
+
+
+      <!-- CERTIFICATES -->
+      <section class="card">
+        <div class="section-label">📜 گواهی‌ها و دوره‌ها</div>
+        <div class="cert-grid">
+          <div class="cert-item"><span class="icon">✓</span> HACCP (سیستم مدیریت ایمنی مواد غذایی)</div>
+          <div class="cert-item"><span class="icon">✓</span> ISO22000 (مدیریت ایمنی مواد غذایی)</div>
+          <div class="cert-item"><span class="icon">✓</span> اورژانس و کمک‌های اولیه حیوانات کوچک</div>
+          <div class="cert-item"><span class="icon">✓</span> بهداشت و بیماری‌های پرندگان زینتی</div>
+          <div class="cert-item"><span class="icon">✓</span> تغذیه و بیماری‌های نشخوارکنندگان جوان</div>
+          <div class="cert-item"><span class="icon">✓</span> پرورش گیاهان دارویی و استخراج مواد مؤثره</div>
+          <div class="cert-item"><span class="icon">✓</span> مدیریت بحران و مخاطرات طبیعی</div>
+          <div class="cert-item"><span class="icon">✓</span> ارزیابی و حمایت از شرکت‌های دانش‌بنیان</div>
+        </div>
+        <div class="extra-box">
+          🏛️ <strong>فوق‌برنامه:</strong> شرکت در ده‌ها نمایشگاه تخصصی، کنگره‌ها و همایش‌های علمی، همکاری در پروژه‌های تحقیقاتی گیاهان دارویی.
+        </div>
+      </section>
+
+      <!-- FORM -->
+      <section class="card form-card" id="consult">
+        <div class="form-title">📋 درخواست مشاوره دامپزشکی یا بیمه حیوانات خانگی</div>
+        <div class="form-sub">فرم زیر را پر کنید تا در اسرع وقت با شما تماس بگیرم — دکتر جعفری دامپزشک در {city.name}</div>
+        <form id="consult-form" action={`https://formspree.io/f/${formspreeId}`} method="POST">
+          <div class="form-group">
+            <label for="name">نام و نام خانوادگی</label>
+            <input type="text" id="name" name="name" placeholder="نام خود را وارد کنید" required autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label for="phone">شماره تماس</label>
+            <input type="tel" id="phone" name="phone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required autocomplete="tel" />
+          </div>
+          <div class="form-group">
+            <label for="city-select">شهر شما</label>
+            <select id="city-select" name="city">
+              <option value="ورامین">ورامین</option>
+              <option value="پیشوا">پیشوا</option>
+              <option value="قرچک">قرچک</option>
+              <option value="پاکدشت">پاکدشت</option>
+              <option value="سایر">سایر شهرها</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">پیام شما</label>
+            <textarea id="message" name="message" placeholder="موضوع مشاوره یا سوال خود را بنویسید..." required></textarea>
+          </div>
+          <input type="text" name="_gotcha" style="display:none !important" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button type="submit" class="btn-submit" id="submit-btn">🚀 ارسال درخواست مشاوره</button>
+        </form>
+        <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="card footer">
+        <div class="socials">
+          <a href="https://t.me/AlirezainsuranceR" target="_blank" rel="noopener">تلگرام</a>
+          <a href="https://ble.ir/bime_saman_mohamadi" target="_blank" rel="noopener">بله</a>
+          <a href="https://www.instagram.com/alireza.insurance/" target="_blank" rel="noopener">اینستاگرام</a>
+          <a href="https://rubika.ir/Alirezainsurance" target="_blank" rel="noopener">روبیکا</a>
+        </div>
+        <p>
+          📞 <a href={`tel:${phone}`}>{phone}</a> &nbsp;|&nbsp; ✉️ <a href={`mailto:${email}`}>{email}</a>
+        </p>
+        <p style="margin-top:6px; font-size:13px;">
+          دکتر جعفری دامپزشک در {city.name} | بیمه حیوانات خانگی
+        </p>
+        <p style="margin-top:8px; font-size:12.5px; opacity:0.7;">
+          © {new Date().getFullYear()} دکتر {fullName} — تمامی حقوق محفوظ است
+        </p>
+      </footer>
+    </div>
+
+    <!-- Floating Call Button -->
+    <a href={`tel:${phone}`} class="fab-call" aria-label="تماس فوری با دکتر">📞</a>
+
+    <script>
+      const form = document.getElementById('consult-form');
+      const statusDiv = document.getElementById('form-status');
+      const btn = document.getElementById('submit-btn');
+      const originalText = btn.innerHTML;
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        btn.innerHTML = '⏳ در حال ارسال...';
+        btn.disabled = true;
+        statusDiv.className = 'form-status';
+        statusDiv.textContent = '';
+
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: new FormData(form),
+          });
+          if (res.ok) {
+            statusDiv.className = 'form-status success';
+            statusDiv.textContent = '✅ درخواست شما با موفقیت ارسال شد! به‌زودی با شما تماس می‌گیرم.';
+            btn.innerHTML = '✅ ارسال شد!';
+            form.reset();
+          } else {
+            throw new Error('خطا در ارسال');
+          }
+        } catch {
+          statusDiv.className = 'form-status error';
+          statusDiv.textContent = '❌ خطا در ارسال. لطفاً دوباره تلاش کنید یا مستقیماً تماس بگیرید.';
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }
+        statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    </script>
+  </body>
+</html>
