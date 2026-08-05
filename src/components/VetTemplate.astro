@@ -39,30 +39,29 @@ const siteDescription = city.description;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     
-    <script type="application/ld+json">
-    {
+    <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "VeterinaryCare",
       "name": `دکتر ${fullName} - دامپزشک در ${city.name}`,
       "alternateName": "دکتر جعفری دامپزشک",
       "description": `دامپزشک در ${city.name} با تخصص در مشاوره دامپزشکی، درمان حیوانات خانگی، ایمنی مواد غذایی و ارائه بیمه حیوانات خانگی`,
-      "url": ${JSON.stringify(city.canonical)},
+      "url": city.canonical,
       "telephone": `+98${phone.replace(/[^0-9]/g, '')}`,
-      "email": ${JSON.stringify(email)},
+      "email": email,
       "priceRange": "$$",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": ${JSON.stringify(city.name)},
+        "addressLocality": city.name,
         "addressRegion": "تهران",
         "addressCountry": "IR"
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": ${JSON.stringify(city.latitude)},
-        "longitude": ${JSON.stringify(city.longitude)}
+        "latitude": city.latitude,
+        "longitude": city.longitude
       },
       "areaServed": [
-        { "@type": "City", "name": ${JSON.stringify(city.name)} },
+        { "@type": "City", "name": city.name },
         { "@type": "City", "name": "ورامین" },
         { "@type": "City", "name": "پیشوا" },
         { "@type": "City", "name": "قرچک" },
@@ -96,8 +95,7 @@ const siteDescription = city.description;
           }
         ]
       }
-    }
-    </script>
+    })} />
     
     <style>
       /* تمام استایل‌های قبلی شما - همان کدی که در index.astro داشتید */
@@ -775,161 +773,157 @@ const siteDescription = city.description;
         .fab-call { animation: none; }
       }
     
-/* ===== استایل‌های محتوای اختصاصی شهرها ===== */
-.city-special-content {
-  margin-top: 20px;
-  padding: 0 4px;
-}
+    /* ===== استایل‌های محتوای اختصاصی شهرها ===== */
+    .city-special-content {
+      margin-top: 20px;
+      padding: 0 4px;
+    }
 
-.city-special-content h2 {
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--primary);
-  margin: 30px 0 16px 0;
-  border-right: 5px solid var(--gold);
-  padding-right: 16px;
-}
+    .city-special-content h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 30px 0 16px 0;
+      border-right: 5px solid var(--gold);
+      padding-right: 16px;
+    }
 
-.city-special-content h3 {
-  font-size: 19px;
-  font-weight: 700;
-  color: var(--text);
-  margin: 24px 0 12px 0;
-}
+    .city-special-content h3 {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 24px 0 12px 0;
+    }
 
-.city-special-content ul {
-  list-style: none;
-  padding: 0;
-  margin: 12px 0 16px 0;
-}
+    .city-special-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 16px 0;
+    }
 
-.city-special-content ul li {
-  padding: 8px 0 8px 16px;
-  border-bottom: 1px solid rgba(10, 74, 108, 0.06);
-  font-size: 14.5px;
-  line-height: 1.8;
-  position: relative;
-  padding-right: 28px;
-}
+    .city-special-content ul li {
+      padding: 8px 0 8px 16px;
+      border-bottom: 1px solid rgba(10, 74, 108, 0.06);
+      font-size: 14.5px;
+      line-height: 1.8;
+      position: relative;
+      padding-right: 28px;
+    }
 
-.city-special-content ul li::before {
-  content: "▸";
-  color: var(--secondary);
-  font-weight: 700;
-  position: absolute;
-  right: 0;
-}
+    .city-special-content ul li::before {
+      content: "▸";
+      color: var(--secondary);
+      font-weight: 700;
+      position: absolute;
+      right: 0;
+    }
 
-.city-special-content ul li:last-child {
-  border-bottom: none;
-}
+    .city-special-content ul li:last-child {
+      border-bottom: none;
+    }
 
-.stats-box {
-  background: var(--primary-light);
-  border-radius: 16px;
-  padding: 20px 24px;
-  margin: 16px 0 20px 0;
-}
+    .stats-box {
+      background: var(--primary-light);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin: 16px 0 20px 0;
+    }
 
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(10, 74, 108, 0.08);
-}
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(10, 74, 108, 0.08);
+    }
 
-.stat-row:last-child {
-  border-bottom: none;
-}
+    .stat-row:last-child {
+      border-bottom: none;
+    }
 
-.stat-label {
-  font-weight: 600;
-  color: var(--text-mid);
-}
+    .stat-label {
+      font-weight: 600;
+      color: var(--text-mid);
+    }
 
-.stat-value {
-  font-weight: 800;
-  color: var(--primary);
-}
+    .stat-value {
+      font-weight: 800;
+      color: var(--primary);
+    }
 
-.testimonials {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin: 16px 0 20px 0;
-}
+    .testimonials {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0 20px 0;
+    }
 
-@media (max-width: 700px) {
-  .testimonials {
-    grid-template-columns: 1fr;
-  }
-}
+    @media (max-width: 700px) {
+      .testimonials {
+        grid-template-columns: 1fr;
+      }
+    }
 
-.testimonial {
-  background: var(--gold-bg);
-  border-radius: 16px;
-  padding: 18px 20px;
-  border-right: 4px solid var(--gold);
-}
+    .testimonial {
+      background: var(--gold-bg);
+      border-radius: 16px;
+      padding: 18px 20px;
+      border-right: 4px solid var(--gold);
+    }
 
-.testimonial p {
-  font-size: 14px;
-  line-height: 1.8;
-  color: var(--text);
-  font-style: italic;
-}
+    .testimonial p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+      font-style: italic;
+    }
 
-.testimonial .author {
-  display: block;
-  margin-top: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--primary);
-}
+    .testimonial .author {
+      display: block;
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+    }
 
-.city-faq {
-  margin: 24px 0 16px 0;
-}
+    .city-faq {
+      margin: 24px 0 16px 0;
+    }
 
-.faq-item {
-  background: var(--bg);
-  border-radius: 12px;
-  padding: 16px 20px;
-  margin-bottom: 12px;
-}
+    .faq-item {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
 
-.faq-item p {
-  font-size: 14.5px;
-  line-height: 1.8;
-  margin: 4px 0;
-}
+    .faq-item p {
+      font-size: 14.5px;
+      line-height: 1.8;
+      margin: 4px 0;
+    }
 
-.faq-item p:first-child {
-  font-weight: 600;
-  color: var(--primary);
-}
+    .faq-item p:first-child {
+      font-weight: 600;
+      color: var(--primary);
+    }
 
-@media (max-width: 450px) {
-  .city-special-content h2 {
-    font-size: 20px;
-  }
-  .city-special-content h3 {
-    font-size: 17px;
-  }
-  .stats-box {
-    padding: 14px 16px;
-  }
-  .stat-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-}
-
-
-
-
-</style>
+    @media (max-width: 450px) {
+      .city-special-content h2 {
+        font-size: 20px;
+      }
+      .city-special-content h3 {
+        font-size: 17px;
+      }
+      .stats-box {
+        padding: 14px 16px;
+      }
+      .stat-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+    }
+    </style>
   </head>
   <body>
     <div class="page">
@@ -1046,11 +1040,10 @@ const siteDescription = city.description;
         </div>
       </section>
 
-<!-- ===== محتوای اختصاصی شهر ===== -->
-<section class="card">
-  <div set:html={city.localContent} />
-</section>
-
+      <!-- ===== محتوای اختصاصی شهر ===== -->
+      <section class="card">
+        <div set:html={city.localContent} />
+      </section>
 
       <!-- CERTIFICATES -->
       <section class="card">
