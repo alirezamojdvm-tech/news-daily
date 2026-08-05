@@ -7,7 +7,7 @@ const siteUrl = "https://news-daily-e3a.pages.dev";
 const authorName = "علیرضا محمّدی جعفری";
 
 const allPosts = await getCollection('posts');
-const sortedPosts = allPosts.sort((a, b) => b.id.localeCompare(a.id));
+const sortedPosts = allPosts.sort((a, b) => Number(b.id) - Number(a.id));
 
 // ===== ★★★★★ JSON-LD ★★★★★ =====
 const jsonLd = {
