@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "vet",
-=======
-  "name": "news-daily",
->>>>>>> cc84d0167b29f5463d601cdfb8add51e632f736b
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -17,11 +13,7 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
-<<<<<<< HEAD
-    "astro": "^7.1.6"
-=======
-    "astro": "^7.1.5",
+    "astro": "^7.1.6",
     "axios": "^1.18.1"
->>>>>>> cc84d0167b29f5463d601cdfb8add51e632f736b
   }
 }
