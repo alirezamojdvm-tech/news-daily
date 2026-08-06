@@ -1,0 +1,59 @@
+{
+  "total_symbols": 320,
+  "total_value": 12500000000000,
+  "top_gainers": [
+    {
+      "name": "فولاد",
+      "change": 5.2,
+      "price": 4850
+    },
+    {
+      "name": "خودرو",
+      "change": 4.8,
+      "price": 320
+    },
+    {
+      "name": "کگل",
+      "change": 3.9,
+      "price": 2150
+    },
+    {
+      "name": "فملی",
+      "change": 3.5,
+      "price": 1800
+    },
+    {
+      "name": "شستا",
+      "change": 2.8,
+      "price": 750
+    }
+  ],
+  "top_losers": [
+    {
+      "name": "شپنا",
+      "change": -3.5,
+      "price": 1800
+    },
+    {
+      "name": "وبملت",
+      "change": -2.8,
+      "price": 950
+    },
+    {
+      "name": "خگستر",
+      "change": -2.2,
+      "price": 620
+    },
+    {
+      "name": "سایپا",
+      "change": -1.8,
+      "price": 120
+    },
+    {
+      "name": "مپنا",
+      "change": -1.5,
+      "price": 550
+    }
+  ],
+  "last_update": "2026-07-29T14:33:36.711Z"
+}

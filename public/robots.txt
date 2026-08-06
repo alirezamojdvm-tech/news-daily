@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # As a condition of accessing this website, you agree to abide by the following
 # content signals:
 
@@ -30,3 +31,8 @@ User-agent: meta-externalagent
 Disallow: /
 
 Sitemap: https://vet.hsc-co.ir/sitemap-index.xml
+=======
+User-agent: *
+Allow: /
+Sitemap: https://blog.hsc-co.ir/sitemap.xml
+>>>>>>> cc84d0167b29f5463d601cdfb8add51e632f736b
