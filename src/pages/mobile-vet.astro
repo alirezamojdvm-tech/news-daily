@@ -1,0 +1,591 @@
+---
+// src/pages/mobile-vet.astro
+
+const fullName = "علیرضا محمّدی جعفری";
+const role = "دامپزشک و مشاور ایمنی غذایی";
+const phone = "۰۹۰۲۵۴۷۲۹۲۹";
+const email = "amojdvm@iran.ir";
+
+const pageData = {
+  title: "دامپزشک سیار در ورامین | خدمات دامپزشکی در منزل",
+  description: "دامپزشک سیار در ورامین و شهرهای اطراف. دکتر جعفری با بیش از ۱۰ سال تجربه، خدمات دامپزشکی در منزل، واکسیناسیون، درمان و مشاوره ارائه می‌دهد.",
+  keywords: "دامپزشک سیار, دامپزشک در منزل, دامپزشک سیار ورامین, خدمات دامپزشکی در محل, اعزام دامپزشک به منزل",
+  canonical: "https://vet.hsc-co.ir/mobile-vet",
+  heroBadge: "🚑 دامپزشک سیار در ورامین",
+  heroTitle: "خدمات دامپزشکی در منزل",
+};
+---
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageData.title}</title>
+    <meta name="description" content={pageData.description} />
+    <meta name="keywords" content={pageData.keywords} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content={pageData.title} />
+    <meta property="og:description" content={pageData.description} />
+    <meta property="og:url" content={pageData.canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fa_IR" />
+    <link rel="canonical" href={pageData.canonical} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --primary: #0a4a6c;
+        --primary-light: #e8f4fb;
+        --primary-mid: #1a6a94;
+        --primary-dark: #06344d;
+        --secondary: #2ecc71;
+        --secondary-dark: #27ae60;
+        --gold: #f1c40f;
+        --gold-bg: #fef9e7;
+        --text: #132533;
+        --text-mid: #3a5a6a;
+        --text-muted: #6b7c8c;
+        --bg: #f0f7fb;
+        --surface: #ffffff;
+        --shadow: 0 8px 32px rgba(10, 74, 108, 0.10);
+        --shadow-hover: 0 16px 48px rgba(10, 74, 108, 0.16);
+        --r-card: 24px;
+        --r-pill: 50px;
+        --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        direction: rtl;
+        line-height: 1.75;
+        padding: 20px;
+        background-image:
+          radial-gradient(circle at 10% 20%, rgba(10,74,108,0.04) 0%, transparent 40%),
+          radial-gradient(circle at 90% 80%, rgba(46,204,113,0.04) 0%, transparent 40%);
+      }
+      .page { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+      .card {
+        background: var(--surface);
+        border-radius: var(--r-card);
+        box-shadow: var(--shadow);
+        padding: 32px 40px;
+        border: 1px solid rgba(10, 74, 108, 0.06);
+        animation: fadeUp 0.55s ease both;
+        transition: var(--transition);
+      }
+      .card:hover { box-shadow: var(--shadow-hover); }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 20px 28px;
+      }
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .logo-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(145deg, var(--primary) 0%, var(--primary-mid) 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: #fff;
+        flex-shrink: 0;
+        box-shadow: 0 6px 18px rgba(10,74,108,0.25);
+      }
+      .logo-text {
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--primary);
+        letter-spacing: -0.3px;
+      }
+      .contact-badge {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 14px;
+        color: var(--text-mid);
+      }
+      .contact-badge a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+        transition: var(--transition);
+        padding: 6px 12px;
+        border-radius: 10px;
+      }
+      .contact-badge a:hover {
+        background: var(--primary-light);
+        color: var(--primary-dark);
+      }
+      .hero {
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        padding: 48px 40px;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fcff 100%);
+      }
+      .hero .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--gold-bg);
+        color: #9a7b0a;
+        border: 1px solid #f5e6a3;
+        padding: 7px 22px;
+        border-radius: 40px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(241,196,15,0.15);
+      }
+      .hero h1 {
+        font-size: 34px;
+        font-weight: 900;
+        color: var(--text);
+        line-height: 1.4;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+      }
+      .hero h1 .highlight {
+        color: var(--primary);
+        position: relative;
+      }
+      .cta-group {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        position: relative;
+        z-index: 1;
+        margin-top: 20px;
+      }
+      .btn-primary {
+        background: linear-gradient(145deg, var(--primary) 0%, var(--primary-mid) 100%);
+        color: #fff;
+        padding: 15px 38px;
+        border: none;
+        border-radius: var(--r-pill);
+        font-size: 17px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 24px rgba(10,74,108,.28);
+      }
+      .btn-primary:hover {
+        background: linear-gradient(145deg, var(--primary-dark) 0%, var(--primary) 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(10,74,108,.38);
+      }
+      .btn-secondary {
+        background: linear-gradient(145deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        color: #fff;
+        padding: 15px 38px;
+        border: none;
+        border-radius: var(--r-pill);
+        font-size: 17px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 24px rgba(46,204,113,.28);
+      }
+      .btn-secondary:hover {
+        background: linear-gradient(145deg, #219a52 0%, var(--secondary-dark) 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(46,204,113,.38);
+      }
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-muted);
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .section-label::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--primary-light), transparent);
+      }
+      .service-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin: 16px 0;
+      }
+      .service-item {
+        background: var(--primary-light);
+        border-radius: 18px;
+        padding: 24px 20px;
+        transition: var(--transition);
+        border-right: 4px solid var(--primary);
+      }
+      .service-item:hover {
+        background: linear-gradient(160deg, var(--primary) 0%, var(--primary-mid) 100%);
+        color: #fff;
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(10,74,108,.22);
+      }
+      .service-item h3 {
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+      .service-item p {
+        font-size: 14px;
+        opacity: 0.85;
+        line-height: 1.6;
+      }
+      .service-item:hover h3,
+      .service-item:hover p { color: #fff; }
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+        margin: 16px 0;
+      }
+      .benefit-item {
+        text-align: center;
+        padding: 20px 16px;
+        background: var(--gold-bg);
+        border-radius: 16px;
+        border: 1px solid #f5e6a3;
+      }
+      .benefit-item .icon {
+        font-size: 32px;
+        display: block;
+        margin-bottom: 8px;
+      }
+      .benefit-item .label {
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--text);
+      }
+      .faq-item {
+        background: var(--bg);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+      }
+      .faq-item strong {
+        color: var(--primary);
+      }
+      .footer {
+        text-align: center;
+        font-size: 13.5px;
+        color: var(--text-muted);
+        border-top: 1px solid var(--primary-light);
+        padding-top: 24px;
+        margin-top: 4px;
+      }
+      .footer a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .footer .socials {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .footer .socials a {
+        font-size: 13.5px;
+        padding: 7px 16px;
+        border-radius: 24px;
+        background: var(--primary-light);
+        color: var(--primary);
+        transition: var(--transition);
+        font-weight: 600;
+      }
+      .footer .socials a:hover {
+        background: var(--primary);
+        color: #fff;
+        transform: translateY(-2px);
+      }
+      .fab-call {
+        position: fixed;
+        bottom: 28px;
+        left: 28px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(145deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        box-shadow: 0 8px 28px rgba(46,204,113,0.4);
+        text-decoration: none;
+        z-index: 100;
+        transition: var(--transition);
+        animation: pulse 2.5s infinite;
+      }
+      .fab-call:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 36px rgba(46,204,113,0.5);
+      }
+      @keyframes pulse {
+        0%, 100% { box-shadow: 0 8px 28px rgba(46,204,113,0.4); }
+        50% { box-shadow: 0 8px 28px rgba(46,204,113,0.4), 0 0 0 14px rgba(46,204,113,0.15); }
+      }
+      @media (max-width: 700px) {
+        body { padding: 14px; }
+        .card { padding: 20px 16px; }
+        .hero { padding: 28px 16px; }
+        .hero h1 { font-size: 24px; }
+        .service-grid { grid-template-columns: 1fr; }
+        .benefits-grid { grid-template-columns: 1fr; }
+        .header { flex-direction: column; text-align: center; }
+        .logo-area { justify-content: center; }
+        .contact-badge { justify-content: center; flex-wrap: wrap; }
+        .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+        .fab-call { bottom: 20px; left: 20px; width: 56px; height: 56px; font-size: 22px; }
+      }
+      @media (max-width: 450px) {
+        .hero h1 { font-size: 20px; }
+        .logo-text { font-size: 16px; }
+        .service-item { padding: 18px 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- HEADER -->
+      <header class="card header">
+        <div class="logo-area">
+          <div class="logo-icon" aria-hidden="true">🐾</div>
+          <span class="logo-text">{fullName}</span>
+        </div>
+        <div class="contact-badge">
+          <span>📞 <a href={`tel:${phone}`}>{phone}</a></span>
+          <span>✉️ <a href={`mailto:${email}`}>{email}</a></span>
+        </div>
+      </header>
+
+      <!-- HERO -->
+      <section class="card hero">
+        <span class="badge">{pageData.heroBadge}</span>
+        <h1>
+          <span class="highlight">{pageData.heroTitle}</span><br />
+          در ورامین و شهرهای اطراف
+        </h1>
+        <p style="font-size:17px; color:var(--text-mid); max-width:650px; margin:0 auto; line-height:2;">
+          با دکتر جعفری، دامپزشک سیار در ورامین. خدمات دامپزشکی در منزل، 
+          <strong>واکسیناسیون، درمان، مشاوره و بیمه حیوانات خانگی</strong> — بدون نیاز به جابجایی حیوان
+        </p>
+        <div class="cta-group">
+          <a href="tel:09025472929" class="btn-primary">📞 تماس برای هماهنگی</a>
+          <a href="#consult" class="btn-secondary">📋 درخواست مشاوره</a>
+        </div>
+      </section>
+
+      <!-- خدمات -->
+      <section class="card">
+        <div class="section-label">🚑 خدمات دامپزشکی سیار</div>
+        <p style="font-size:15px; color:var(--text-mid); line-height:1.8; margin-bottom:16px;">
+          دکتر جعفری با خودروی مجهز دامپزشکی، در محل شما حاضر می‌شود و کلیه خدمات مورد نیاز حیوان شما را انجام می‌دهد.
+        </p>
+        <div class="service-grid">
+          <div class="service-item">
+            <h3>🩺 معاینه و تشخیص</h3>
+            <p>معاینه کامل حیوان، تشخیص بیماری و تجویز درمان مناسب</p>
+          </div>
+          <div class="service-item">
+            <h3>💉 واکسیناسیون</h3>
+            <p>انجام واکسیناسیون سگ، گربه و سایر حیوانات در محل</p>
+          </div>
+          <div class="service-item">
+            <h3>🛡️ بیمه حیوانات خانگی</h3>
+            <p>مشاوره و ارائه بیمه درمانی حیوانات خانگی (بیمه سامان)</p>
+          </div>
+          <div class="service-item">
+            <h3>🧪 آزمایش و نمونه‌گیری</h3>
+            <p>نمونه‌گیری خون، ادرار و مدفوع برای ارسال به آزمایشگاه</p>
+          </div>
+          <div class="service-item">
+            <h3>💊 تجویز دارو</h3>
+            <p>تجویز و تزریق داروهای مورد نیاز حیوان در منزل</p>
+          </div>
+          <div class="service-item">
+            <h3>📋 مشاوره تغذیه</h3>
+            <p>ارائه برنامه غذایی مناسب برای حیوان خانگی شما</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- مزایا -->
+      <section class="card">
+        <div class="section-label">✨ مزایای دامپزشکی سیار</div>
+        <div class="benefits-grid">
+          <div class="benefit-item">
+            <span class="icon">😌</span>
+            <span class="label">کاهش استرس حیوان</span>
+            <p style="font-size:12px; color:var(--text-mid); margin-top:4px;">حیوان در محیط آشنا آرامش بیشتری دارد</p>
+          </div>
+          <div class="benefit-item">
+            <span class="icon">⏰</span>
+            <span class="label">صرفه‌جویی در وقت</span>
+            <p style="font-size:12px; color:var(--text-mid); margin-top:4px;">نیاز به جابجایی و ترافیک ندارید</p>
+          </div>
+          <div class="benefit-item">
+            <span class="icon">🏠</span>
+            <span class="label">خدمت در منزل</span>
+            <p style="font-size:12px; color:var(--text-mid); margin-top:4px;">مناسب برای حیوانات بیمار و مسن</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- محدوده خدمات -->
+      <section class="card">
+        <div class="section-label">📍 محدوده خدمات دامپزشکی سیار</div>
+        <p style="font-size:15px; color:var(--text-mid); line-height:2;">
+          دامپزشک سیار دکتر جعفری در شهرهای زیر خدمات ارائه می‌دهد:
+        </p>
+        <ul style="list-style:none; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;">
+          <li style="background:var(--primary-light); padding:10px 16px; border-radius:10px; text-align:center; font-weight:600; color:var(--primary);">🏙️ ورامین</li>
+          <li style="background:var(--primary-light); padding:10px 16px; border-radius:10px; text-align:center; font-weight:600; color:var(--primary);">🏙️ پیشوا</li>
+          <li style="background:var(--primary-light); padding:10px 16px; border-radius:10px; text-align:center; font-weight:600; color:var(--primary);">🏙️ قرچک</li>
+          <li style="background:var(--primary-light); padding:10px 16px; border-radius:10px; text-align:center; font-weight:600; color:var(--primary);">🏙️ پاکدشت</li>
+        </ul>
+      </section>
+
+      <!-- سوالات متداول -->
+      <section class="card">
+        <div class="section-label">❓ سوالات متداول</div>
+        <div class="faq-item">
+          <strong>سوال: هزینه دامپزشک سیار چقدر است؟</strong>
+          <p style="font-size:14px; color:var(--text-mid); margin:4px 0 0 0;">هزینه بر اساس نوع خدمت، فاصله و تعداد حیوانات تعیین می‌شود. لطفاً تماس بگیرید تا قیمت دقیق اعلام شود.</p>
+        </div>
+        <div class="faq-item">
+          <strong>سوال: آیا خدمات شبانه‌روزی هم دارید؟</strong>
+          <p style="font-size:14px; color:var(--text-mid); margin:4px 0 0 0;">بله، خدمات اورژانسی با هماهنگی قبلی در تمام ساعات شبانه‌روز ارائه می‌شود.</p>
+        </div>
+        <div class="faq-item">
+          <strong>سوال: برای بیمه حیوانات خانگی در منزل چه مدارکی نیاز است؟</strong>
+          <p style="font-size:14px; color:var(--text-mid); margin:4px 0 0 0;">کارت واکسیناسیون حیوان و مدارک شناسایی صاحب حیوان کافی است.</p>
+        </div>
+      </section>
+
+      <!-- فرم -->
+      <section class="card" id="consult" style="background:linear-gradient(160deg, var(--primary) 0%, var(--primary-dark) 100%); color:#fff;">
+        <h2 style="font-size:22px; font-weight:800; margin:0 0 6px 0;">📋 درخواست مشاوره دامپزشکی سیار</h2>
+        <p style="font-size:14.5px; opacity:0.88; margin-bottom:22px;">فرم زیر را پر کنید تا هماهنگی لازم انجام شود.</p>
+        <form id="consult-form" action="https://formspree.io/f/meeywgdl" method="POST">
+          <div class="form-group" style="margin-bottom:16px;">
+            <label style="display:block; font-size:13px; font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:6px;">نام و نام خانوادگی</label>
+            <input type="text" name="name" placeholder="نام خود را وارد کنید" required style="width:100%; padding:14px 18px; border:none; border-radius:14px; font-size:15px; background:rgba(255,255,255,0.95); color:var(--text);" />
+          </div>
+          <div class="form-group" style="margin-bottom:16px;">
+            <label style="display:block; font-size:13px; font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:6px;">شماره تماس</label>
+            <input type="tel" name="phone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required style="width:100%; padding:14px 18px; border:none; border-radius:14px; font-size:15px; background:rgba(255,255,255,0.95); color:var(--text);" />
+          </div>
+          <div class="form-group" style="margin-bottom:16px;">
+            <label style="display:block; font-size:13px; font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:6px;">شهر شما</label>
+            <select name="city" style="width:100%; padding:14px 18px; border:none; border-radius:14px; font-size:15px; background:rgba(255,255,255,0.95); color:var(--text);">
+              <option value="ورامین">ورامین</option>
+              <option value="پیشوا">پیشوا</option>
+              <option value="قرچک">قرچک</option>
+              <option value="پاکدشت">پاکدشت</option>
+              <option value="سایر">سایر شهرها</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:16px;">
+            <label style="display:block; font-size:13px; font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:6px;">پیام شما</label>
+            <textarea name="message" placeholder="موضوع مشاوره یا سوال خود را بنویسید..." required style="width:100%; padding:14px 18px; border:none; border-radius:14px; font-size:15px; background:rgba(255,255,255,0.95); color:var(--text); min-height:90px; resize:vertical;"></textarea>
+          </div>
+          <input type="text" name="_gotcha" style="display:none !important;" />
+          <button type="submit" class="btn-submit" style="width:100%; padding:16px; background:linear-gradient(145deg, var(--secondary) 0%, var(--secondary-dark) 100%); color:#fff; border:none; border-radius:50px; font-size:17px; font-weight:700; font-family:inherit; cursor:pointer; transition:all 0.3s; margin-top:8px; box-shadow:0 6px 20px rgba(46,204,113,0.3);">🚀 ارسال درخواست</button>
+        </form>
+        <div id="form-status" style="display:none; margin-top:16px; padding:14px 18px; border-radius:14px; font-size:14.5px; font-weight:500; text-align:center; background:rgba(255,255,255,0.15); color:#fff;"></div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="card footer">
+        <div class="socials">
+          <a href="https://t.me/AlirezainsuranceR" target="_blank" rel="noopener">تلگرام</a>
+          <a href="https://ble.ir/bime_saman_mohamadi" target="_blank" rel="noopener">بله</a>
+          <a href="https://www.instagram.com/alireza.insurance/" target="_blank" rel="noopener">اینستاگرام</a>
+          <a href="https://rubika.ir/Alirezainsurance" target="_blank" rel="noopener">روبیکا</a>
+        </div>
+        <p>📞 <a href={`tel:${phone}`}>{phone}</a> &nbsp;|&nbsp; ✉️ <a href={`mailto:${email}`}>{email}</a></p>
+        <p style="margin-top:6px; font-size:13px;">دامپزشک سیار در ورامین | بیمه حیوانات خانگی</p>
+        <p style="margin-top:8px; font-size:12.5px; opacity:0.7;">© {new Date().getFullYear()} دکتر {fullName} — تمامی حقوق محفوظ است</p>
+      </footer>
+    </div>
+
+    <!-- Floating Call Button -->
+    <a href={`tel:${phone}`} class="fab-call" aria-label="تماس فوری با دکتر">📞</a>
+
+    <script>
+      const form = document.getElementById('consult-form');
+      const statusDiv = document.getElementById('form-status');
+      const btn = document.querySelector('.btn-submit');
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '⏳ در حال ارسال...';
+        btn.disabled = true;
+        statusDiv.style.display = 'none';
+        statusDiv.textContent = '';
+
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: new FormData(form),
+          });
+          if (res.ok) {
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'form-status success';
+            statusDiv.textContent = '✅ درخواست شما با موفقیت ارسال شد! به‌زودی با شما تماس می‌گیرم.';
+            btn.innerHTML = '✅ ارسال شد!';
+            form.reset();
+          } else {
+            throw new Error('خطا در ارسال');
+          }
+        } catch {
+          statusDiv.style.display = 'block';
+          statusDiv.className = 'form-status error';
+          statusDiv.textContent = '❌ خطا در ارسال. لطفاً دوباره تلاش کنید یا مستقیماً تماس بگیرید.';
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
