@@ -1,0 +1,776 @@
+---
+// src/pages/cow-vet.astro
+
+const fullName = "علیرضا محمّدی جعفری";
+const role = "دامپزشک و مشاور ایمنی غذایی";
+const phone = "۰۹۰۲۵۴۷۲۹۲۹";
+const email = "amojdvm@iran.ir";
+
+const pageData = {
+  title: "دامپزشک گاو در ورامین | خدمات درمانی و مشاوره دامداری",
+  description: "دامپزشک گاو در ورامین با بیش از ۱۰ سال تجربه. خدمات درمانی، مشاوره پرورش، تلقیح مصنوعی و بیمه دام توسط دکتر جعفری.",
+  keywords: "دامپزشک گاو, درمان گاو, بیماری گاو, مشاوره دامداری, تلقیح مصنوعی گاو, دامپزشک گاو در ورامین",
+  canonical: "https://vet.hsc-co.ir/cow-vet",
+  heroBadge: "🐄 دامپزشک گاو در ورامین",
+  heroTitle: "دامپزشک گاو",
+};
+---
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageData.title}</title>
+    <meta name="description" content={pageData.description} />
+    <meta name="keywords" content={pageData.keywords} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content={pageData.title} />
+    <meta property="og:description" content={pageData.description} />
+    <meta property="og:url" content={pageData.canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fa_IR" />
+    <link rel="canonical" href={pageData.canonical} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --primary: #0a4a6c;
+        --primary-light: #e8f4fb;
+        --primary-mid: #1a6a94;
+        --primary-dark: #06344d;
+        --secondary: #2ecc71;
+        --secondary-dark: #27ae60;
+        --gold: #f1c40f;
+        --gold-bg: #fef9e7;
+        --text: #132533;
+        --text-mid: #3a5a6a;
+        --text-muted: #6b7c8c;
+        --bg: #f0f7fb;
+        --surface: #ffffff;
+        --shadow: 0 8px 32px rgba(10, 74, 108, 0.10);
+        --shadow-hover: 0 16px 48px rgba(10, 74, 108, 0.16);
+        --r-card: 24px;
+        --r-pill: 50px;
+        --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        direction: rtl;
+        line-height: 1.75;
+        padding: 20px;
+        background-image:
+          radial-gradient(circle at 10% 20%, rgba(10,74,108,0.04) 0%, transparent 40%),
+          radial-gradient(circle at 90% 80%, rgba(46,204,113,0.04) 0%, transparent 40%);
+      }
+      .page { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+      .card {
+        background: var(--surface);
+        border-radius: var(--r-card);
+        box-shadow: var(--shadow);
+        padding: 32px 40px;
+        border: 1px solid rgba(10, 74, 108, 0.06);
+        animation: fadeUp 0.55s ease both;
+        transition: var(--transition);
+      }
+      .card:hover { box-shadow: var(--shadow-hover); }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 20px 28px;
+      }
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .logo-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(145deg, var(--primary) 0%, var(--primary-mid) 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: #fff;
+        flex-shrink: 0;
+        box-shadow: 0 6px 18px rgba(10,74,108,0.25);
+      }
+      .logo-text {
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--primary);
+        letter-spacing: -0.3px;
+      }
+      .contact-badge {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 14px;
+        color: var(--text-mid);
+      }
+      .contact-badge a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+        transition: var(--transition);
+        padding: 6px 12px;
+        border-radius: 10px;
+      }
+      .contact-badge a:hover {
+        background: var(--primary-light);
+        color: var(--primary-dark);
+      }
+      .hero {
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        padding: 48px 40px;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fcff 100%);
+      }
+      .hero .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--gold-bg);
+        color: #9a7b0a;
+        border: 1px solid #f5e6a3;
+        padding: 7px 22px;
+        border-radius: 40px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(241,196,15,0.15);
+      }
+      .hero h1 {
+        font-size: 34px;
+        font-weight: 900;
+        color: var(--text);
+        line-height: 1.4;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+      }
+      .hero h1 .highlight {
+        color: var(--primary);
+        position: relative;
+      }
+      .hero h1 .highlight::after {
+        content: '';
+        position: absolute;
+        bottom: 3px;
+        right: 0;
+        left: 0;
+        height: 5px;
+        background: linear-gradient(90deg, var(--gold), #f39c12);
+        border-radius: 3px;
+        opacity: 0.85;
+      }
+      .hero p {
+        font-size:17px;
+        color:var(--text-mid);
+        max-width:650px;
+        margin:0 auto;
+        line-height:2;
+      }
+      .cta-group {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        position: relative;
+        z-index: 1;
+        margin-top: 20px;
+      }
+      .btn-primary {
+        background: linear-gradient(145deg, var(--primary) 0%, var(--primary-mid) 100%);
+        color: #fff;
+        padding: 15px 38px;
+        border: none;
+        border-radius: var(--r-pill);
+        font-size: 17px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 24px rgba(10,74,108,.28);
+      }
+      .btn-primary:hover {
+        background: linear-gradient(145deg, var(--primary-dark) 0%, var(--primary) 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(10,74,108,.38);
+      }
+      .btn-secondary {
+        background: linear-gradient(145deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        color: #fff;
+        padding: 15px 38px;
+        border: none;
+        border-radius: var(--r-pill);
+        font-size: 17px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 24px rgba(46,204,113,.28);
+      }
+      .btn-secondary:hover {
+        background: linear-gradient(145deg, #219a52 0%, var(--secondary-dark) 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(46,204,113,.38);
+      }
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-muted);
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .section-label::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--primary-light), transparent);
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+      }
+      .card-item {
+        background: var(--primary-light);
+        border-radius: 18px;
+        padding: 24px 20px;
+        transition: var(--transition);
+        border-right: 4px solid var(--primary);
+      }
+      .card-item:hover {
+        background: linear-gradient(160deg, var(--primary) 0%, var(--primary-mid) 100%);
+        color: #fff;
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(10,74,108,.22);
+      }
+      .card-item .icon {
+        font-size: 32px;
+        display: block;
+        margin-bottom: 8px;
+      }
+      .card-item h3 {
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+      .card-item p {
+        font-size: 14px;
+        opacity: 0.85;
+        line-height: 1.6;
+      }
+      .card-item:hover h3,
+      .card-item:hover p { color: #fff; }
+      .gold-box {
+        background: var(--gold-bg);
+        border-radius: 20px;
+        padding: 28px 30px;
+        border-right: 5px solid var(--gold);
+        margin: 16px 0;
+      }
+      .gold-box h3 {
+        color: var(--primary);
+        font-size: 18px;
+        margin-bottom: 12px;
+      }
+      .gold-box ul {
+        list-style: none;
+        padding: 0;
+      }
+      .gold-box ul li {
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(10,74,108,0.06);
+        font-size: 14.5px;
+        padding-right: 28px;
+        position: relative;
+      }
+      .gold-box ul li::before {
+        content: "✓";
+        color: var(--secondary);
+        font-weight: 700;
+        position: absolute;
+        right: 0;
+      }
+      .gold-box ul li:last-child {
+        border-bottom: none;
+      }
+      .danger-box {
+        background: #f8d7da;
+        border-radius: 16px;
+        padding: 20px 24px;
+        border-right: 5px solid #dc3545;
+        margin: 16px 0;
+      }
+      .danger-box h4 {
+        color: #721c24;
+        font-size: 16px;
+        margin: 0 0 6px 0;
+      }
+      .danger-box p {
+        font-size: 14px;
+        color: #721c24;
+        line-height: 1.6;
+        margin: 0;
+      }
+      .step-box {
+        background: white;
+        border-radius: 16px;
+        padding: 20px 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        text-align: center;
+        border: 1px solid var(--primary-light);
+      }
+      .step-box .num {
+        background: var(--primary);
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px auto;
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .step-box h4 {
+        font-size: 15px;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .step-box p {
+        font-size: 13px;
+        color: var(--text-mid);
+        line-height: 1.6;
+        margin: 0;
+      }
+      .faq-item {
+        background: var(--bg);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+      }
+      .faq-item strong {
+        color: var(--primary);
+      }
+      .faq-item p {
+        font-size: 14px;
+        color: var(--text-mid);
+        margin: 4px 0 0 0;
+      }
+      .footer {
+        text-align: center;
+        font-size: 13.5px;
+        color: var(--text-muted);
+        border-top: 1px solid var(--primary-light);
+        padding-top: 24px;
+        margin-top: 4px;
+      }
+      .footer a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .footer .socials {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .footer .socials a {
+        font-size: 13.5px;
+        padding: 7px 16px;
+        border-radius: 24px;
+        background: var(--primary-light);
+        color: var(--primary);
+        transition: var(--transition);
+        font-weight: 600;
+      }
+      .footer .socials a:hover {
+        background: var(--primary);
+        color: #fff;
+        transform: translateY(-2px);
+      }
+      .fab-call {
+        position: fixed;
+        bottom: 28px;
+        left: 28px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(145deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        box-shadow: 0 8px 28px rgba(46,204,113,0.4);
+        text-decoration: none;
+        z-index: 100;
+        transition: var(--transition);
+        animation: pulse 2.5s infinite;
+      }
+      .fab-call:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 36px rgba(46,204,113,0.5);
+      }
+      @keyframes pulse {
+        0%, 100% { box-shadow: 0 8px 28px rgba(46,204,113,0.4); }
+        50% { box-shadow: 0 8px 28px rgba(46,204,113,0.4), 0 0 0 14px rgba(46,204,113,0.15); }
+      }
+      .form-group {
+        margin-bottom: 16px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 6px;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 14px 18px;
+        border: none;
+        border-radius: 14px;
+        font-size: 15px;
+        font-family: inherit;
+        background: rgba(255,255,255,0.95);
+        color: var(--text);
+        transition: var(--transition);
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(255,255,255,0.3);
+      }
+      .form-group textarea {
+        resize: vertical;
+        min-height: 90px;
+      }
+      .btn-submit {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(145deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+        color: #fff;
+        border: none;
+        border-radius: var(--r-pill);
+        font-size: 17px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 6px 20px rgba(46,204,113,0.3);
+      }
+      .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(46,204,113,.4);
+      }
+      .btn-submit:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .form-status {
+        display: none;
+        margin-top: 16px;
+        padding: 14px 18px;
+        border-radius: 14px;
+        font-size: 14.5px;
+        font-weight: 500;
+        text-align: center;
+        background: rgba(255,255,255,0.15);
+        color: #fff;
+      }
+      .form-status.success {
+        display: block;
+        background: rgba(46,204,113,0.3);
+        color: #d5f5e3;
+      }
+      .form-status.error {
+        display: block;
+        background: rgba(231,76,60,0.3);
+        color: #fadbd8;
+      }
+      @media (max-width: 700px) {
+        body { padding: 14px; }
+        .card { padding: 20px 16px; }
+        .hero { padding: 28px 16px; }
+        .hero h1 { font-size: 24px; }
+        .grid-2 { grid-template-columns: 1fr; }
+        .grid-3 { grid-template-columns: 1fr; }
+        .header { flex-direction: column; text-align: center; }
+        .logo-area { justify-content: center; }
+        .contact-badge { justify-content: center; flex-wrap: wrap; }
+        .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+        .fab-call { bottom: 20px; left: 20px; width: 56px; height: 56px; font-size: 22px; }
+        .gold-box { padding: 20px 18px; }
+      }
+      @media (max-width: 450px) {
+        .hero h1 { font-size: 20px; }
+        .logo-text { font-size: 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- HEADER -->
+      <header class="card header">
+        <div class="logo-area">
+          <div class="logo-icon" aria-hidden="true">🐾</div>
+          <span class="logo-text">{fullName}</span>
+        </div>
+        <div class="contact-badge">
+          <span>📞 <a href={`tel:${phone}`}>{phone}</a></span>
+          <span>✉️ <a href={`mailto:${email}`}>{email}</a></span>
+        </div>
+      </header>
+
+      <!-- HERO -->
+      <section class="card hero">
+        <span class="badge">{pageData.heroBadge}</span>
+        <h1>
+          <span class="highlight">{pageData.heroTitle}</span><br />
+          خدمات درمانی و مشاوره دامداری
+        </h1>
+        <p>
+          دکتر جعفری با بیش از ۱۰ سال تجربه، <strong>خدمات کامل دامپزشکی برای گاوها</strong> 
+          شامل درمان، تلقیح مصنوعی، مشاوره پرورش و بیمه دام در ورامین و شهرهای اطراف ارائه می‌دهد.
+        </p>
+        <div class="cta-group">
+          <a href="#consult" class="btn-primary">📋 مشاوره تخصصی</a>
+          <a href="tel:09025472929" class="btn-secondary">📞 تماس با دامپزشک</a>
+        </div>
+      </section>
+
+      <!-- خدمات -->
+      <section class="card">
+        <div class="section-label">🐄 خدمات دامپزشکی گاو</div>
+        <div class="grid-2">
+          <div class="card-item">
+            <span class="icon">🩺</span>
+            <h3>معاینه و تشخیص</h3>
+            <p>معاینه کامل، تشخیص بیماری‌های داخلی، عفونی و گوارشی گاوها</p>
+          </div>
+          <div class="card-item">
+            <span class="icon">🧪</span>
+            <h3>تلقیح مصنوعی</h3>
+            <p>تلقیح مصنوعی گاوها با اسپرم نژادهای برتر و با کیفیت بالا</p>
+          </div>
+          <div class="card-item">
+            <span class="icon">💉</span>
+            <h3>واکسیناسیون</h3>
+            <p>واکسیناسیون گاوها برای پیشگیری از بیماری‌های عفونی</p>
+          </div>
+          <div class="card-item">
+            <span class="icon">🛡️</span>
+            <h3>بیمه دام</h3>
+            <p>مشاوره و ارائه بیمه‌نامه‌های دام با پوشش کامل</p>
+          </div>
+          <div class="card-item">
+            <span class="icon">🍎</span>
+            <h3>مشاوره پرورش</h3>
+            <p>برنامه غذایی و پرورش گاوهای شیری و گوشتی</p>
+          </div>
+          <div class="card-item">
+            <span class="icon">🔬</span>
+            <h3>آزمایشات تخصصی</h3>
+            <p>آزمایش خون، شیر، مدفوع و تشخیص بیماری‌ها</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- بیماری‌های شایع -->
+      <section class="card">
+        <div class="section-label">🦠 بیماری‌های شایع گاو</div>
+        <div class="gold-box">
+          <ul>
+            <li><strong>بیماری‌های عفونی:</strong> طاعون نشخوارکنندگان، تب برفکی، آبله گاوی</li>
+            <li><strong>بیماری‌های تنفسی:</strong> پنومونی، آنفلوانزای گاوی</li>
+            <li><strong>بیماری‌های گوارشی:</strong> اسهال گوساله، نفخ شکم، کتوز</li>
+            <li><strong>بیماری‌های پستان:</strong> ورم پستان (ماستیت)، عفونت پستان</li>
+            <li><strong>بیماری‌های تولیدمثل:</strong> جفت‌ماندگی، کیست تخمدان، سقط جنین</li>
+            <li><strong>بیماری‌های انگلی:</strong> انگل‌های داخلی و خارجی</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- واکسیناسیون گاو -->
+      <section class="card">
+        <div class="section-label">💉 برنامه واکسیناسیون گاو</div>
+        <div class="grid-2">
+          <div class="card-item">
+            <span class="icon">🐄</span>
+            <h3>گوساله</h3>
+            <p>واکسیناسیون در سنین ۳-۶ ماهگی با مشاوره دامپزشک</p>
+          </div>
+          <div class="card-item">
+            <span class="icon">🐄</span>
+            <h3>گاو بالغ</h3>
+            <p>واکسن‌های سالانه و فصلی برای پیشگیری از بیماری‌ها</p>
+          </div>
+          <div class="card-item">
+            <span class="icon">🐄</span>
+            <h3>گاو آبستن</h3>
+            <p>برنامه واکسیناسیون ویژه برای محافظت از گاو و جنین</p>
+          </div>
+          <div class="card-item">
+            <span class="icon">🐄</span>
+            <h3>گاو تازه وارد</h3>
+            <p>قرنطینه ۲۱ روزه و واکسیناسیون قبل از ورود به گله</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- سوالات متداول -->
+      <section class="card">
+        <div class="section-label">❓ سوالات متداول</div>
+        <div class="faq-item">
+          <strong>سوال: هزینه تلقیح مصنوعی گاو چقدر است؟</strong>
+          <p>هزینه بسته به نژاد و کیفیت اسپرم متفاوت است. برای اطلاع دقیق تماس بگیرید.</p>
+        </div>
+        <div class="faq-item">
+          <strong>سوال: آیا بیمه دام هزینه‌های درمانی را پوشش می‌دهد؟</strong>
+          <p>بله، بیمه دام هزینه‌های درمانی، جراحی و تلفات را پوشش می‌دهد.</p>
+        </div>
+        <div class="faq-item">
+          <strong>سوال: چند بار در سال باید گاو را معاینه کرد؟</strong>
+          <p>معاینه دوره‌ای هر ۶ ماه و معاینه قبل از فصل تولید مثل توصیه می‌شود.</p>
+        </div>
+      </section>
+
+      <!-- فرم -->
+      <section class="card" id="consult" style="background:linear-gradient(160deg, var(--primary) 0%, var(--primary-dark) 100%); color:#fff;">
+        <h2 style="font-size:22px; font-weight:800; margin:0 0 6px 0;">📋 مشاوره دامپزشکی گاو</h2>
+        <p style="font-size:14.5px; opacity:0.88; margin-bottom:22px;">برای دریافت مشاوره تخصصی، فرم زیر را پر کنید.</p>
+        <form id="consult-form" action="https://formspree.io/f/meeywgdl" method="POST">
+          <div class="form-group">
+            <label>نام و نام خانوادگی</label>
+            <input type="text" name="name" placeholder="نام خود را وارد کنید" required />
+          </div>
+          <div class="form-group">
+            <label>شماره تماس</label>
+            <input type="tel" name="phone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required />
+          </div>
+          <div class="form-group">
+            <label>شهر شما</label>
+            <select name="city">
+              <option value="ورامین">ورامین</option>
+              <option value="پیشوا">پیشوا</option>
+              <option value="قرچک">قرچک</option>
+              <option value="پاکدشت">پاکدشت</option>
+              <option value="سایر">سایر شهرها</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>نوع دام و تعداد</label>
+            <input type="text" name="livestock" placeholder="مثلاً گاو شیری، ۲۰ رأس" />
+          </div>
+          <div class="form-group">
+            <label>سوال شما</label>
+            <textarea name="message" placeholder="سوال خود را بنویسید..." required></textarea>
+          </div>
+          <input type="text" name="_gotcha" style="display:none !important;" />
+          <button type="submit" class="btn-submit">🚀 ارسال درخواست</button>
+        </form>
+        <div id="form-status" class="form-status"></div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="card footer">
+        <div class="socials">
+          <a href="https://t.me/AlirezainsuranceR" target="_blank" rel="noopener">تلگرام</a>
+          <a href="https://ble.ir/bime_saman_mohamadi" target="_blank" rel="noopener">بله</a>
+          <a href="https://www.instagram.com/alireza.insurance/" target="_blank" rel="noopener">اینستاگرام</a>
+          <a href="https://rubika.ir/Alirezainsurance" target="_blank" rel="noopener">روبیکا</a>
+        </div>
+        <p>📞 <a href={`tel:${phone}`}>{phone}</a> &nbsp;|&nbsp; ✉️ <a href={`mailto:${email}`}>{email}</a></p>
+        <p style="margin-top:6px; font-size:13px;">دامپزشک گاو | خدمات درمانی و مشاوره دامداری</p>
+        <p style="margin-top:8px; font-size:12.5px; opacity:0.7;">© {new Date().getFullYear()} دکتر {fullName} — تمامی حقوق محفوظ است</p>
+      </footer>
+    </div>
+
+    <!-- Floating Call Button -->
+    <a href={`tel:${phone}`} class="fab-call" aria-label="تماس فوری با دکتر">📞</a>
+
+    <script>
+      const form = document.getElementById('consult-form');
+      const statusDiv = document.getElementById('form-status');
+      const btn = document.querySelector('.btn-submit');
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '⏳ در حال ارسال...';
+        btn.disabled = true;
+        statusDiv.className = 'form-status';
+        statusDiv.textContent = '';
+
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: new FormData(form),
+          });
+          if (res.ok) {
+            statusDiv.className = 'form-status success';
+            statusDiv.textContent = '✅ درخواست شما با موفقیت ارسال شد! به‌زودی با شما تماس می‌گیرم.';
+            btn.innerHTML = '✅ ارسال شد!';
+            form.reset();
+          } else {
+            throw new Error('خطا در ارسال');
+          }
+        } catch {
+          statusDiv.className = 'form-status error';
+          statusDiv.textContent = '❌ خطا در ارسال. لطفاً دوباره تلاش کنید یا مستقیماً تماس بگیرید.';
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
